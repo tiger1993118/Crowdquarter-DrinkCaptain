@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llBackground"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_day1"
+    android:orientation="vertical"
+    android:paddingBottom="6dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    tools:context=".TileActivity" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="175.81" >
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="13dp"
+            android:fontFamily="sans-serif-light"
+            android:lineSpacingExtra="6sp"
+            android:text="@string/sTime"
+            android:textColor="@color/box_text"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/ivHeader"
+            android:layout_width="fill_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/header" />
+    </RelativeLayout>
+    <!-- <TableLayout -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="0dp" -->
+    <!-- android:layout_weight="341.22" -->
+    <!-- android:paddingBottom="40dp" -->
+    <!-- android:paddingTop="30dp" > -->
+
+
+    <!-- <TableRow -->
+    <!-- android:id="@+id/tableRow1" -->
+    <!-- android:layout_width="match_parent" -->
+    <!-- android:layout_height="0dp" -->
+    <!-- android:layout_marginBottom="5dp" -->
+    <!-- android:layout_weight="1" > -->
+
+
+    <!-- <RelativeLayout -->
+    <!-- android:id="@+id/rlBussines" -->
+    <!-- android:layout_width="0dp" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_marginRight="5dp" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/rectangle_box" > -->
+
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/ivMood1" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_below="@+id/tvMood1" -->
+    <!-- android:layout_marginLeft="20dp" -->
+    <!-- android:background="@drawable/winedown" /> -->
+
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/tvMood1" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:layout_marginLeft="5dp" -->
+    <!-- android:layout_marginTop="5dp" -->
+    <!-- android:text="@string/sWineDown" -->
+    <!-- android:textColor="@android:color/white" -->
+    <!-- android:textSize="18sp" /> -->
+    <!-- </RelativeLayout> -->
+
+
+    <!-- <RelativeLayout -->
+    <!-- android:layout_width="0dp" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_marginRight="5dp" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/rectangle_box" > -->
+
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/tvMood2" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:layout_marginLeft="5dp" -->
+    <!-- android:layout_marginTop="5dp" -->
+    <!-- android:text="@string/sSummerBBQ" -->
+    <!-- android:textColor="@android:color/white" -->
+    <!-- android:textSize="18sp" /> -->
+
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/ivMood2" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_below="@+id/tvMood2" -->
+    <!-- android:layout_marginLeft="20dp" -->
+    <!-- android:background="@drawable/summerbbq" /> -->
+    <!-- </RelativeLayout> -->
+
+
+    <!-- <RelativeLayout -->
+    <!-- android:layout_width="0dp" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/rectangle_box" > -->
+
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/tvMood3" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:layout_marginLeft="5dp" -->
+    <!-- android:layout_marginTop="5dp" -->
+    <!-- android:text="@string/sCelebration" -->
+    <!-- android:textColor="@android:color/white" -->
+    <!-- android:textSize="18sp" /> -->
+
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/ivMood3" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_below="@+id/tvMood3" -->
+    <!-- android:layout_marginLeft="20dp" -->
+    <!-- android:background="@drawable/celebration" /> -->
+    <!-- </RelativeLayout> -->
+    <!-- </TableRow> -->
+
+
+    <!-- <TableRow -->
+    <!-- android:id="@+id/tableRow2" -->
+    <!-- android:layout_width="fill_parent" -->
+    <!-- android:layout_height="0dp" -->
+    <!-- android:layout_weight="1" > -->
+
+
+    <!-- <RelativeLayout -->
+    <!-- android:layout_width="0dp" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_marginRight="5dp" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/rectangle_box" > -->
+
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/tvMood4" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:layout_marginLeft="5dp" -->
+    <!-- android:layout_marginTop="5dp" -->
+    <!-- android:text="@string/sGameNight" -->
+    <!-- android:textColor="@android:color/white" -->
+    <!-- android:textSize="18sp" /> -->
+
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/ivMood4" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_below="@+id/tvMood4" -->
+    <!-- android:layout_marginLeft="20dp" -->
+    <!-- android:background="@drawable/gamenight" /> -->
+    <!-- </RelativeLayout> -->
+
+
+    <!-- <RelativeLayout -->
+    <!-- android:layout_width="0dp" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_marginRight="5dp" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/rectangle_box" > -->
+
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/tvMood5" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:layout_marginLeft="5dp" -->
+    <!-- android:layout_marginTop="5dp" -->
+    <!-- android:text="@string/sBadDay" -->
+    <!-- android:textColor="@android:color/white" -->
+    <!-- android:textSize="18sp" /> -->
+
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/ivMood5" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_below="@+id/tvMood5" -->
+    <!-- android:layout_marginLeft="20dp" -->
+    <!-- android:background="@drawable/badday" /> -->
+    <!-- </RelativeLayout> -->
+
+
+    <!-- <RelativeLayout -->
+    <!-- android:layout_width="0dp" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_weight="1" -->
+    <!-- android:background="@drawable/rectangle_box" > -->
+
+
+    <!-- <TextView -->
+    <!-- android:id="@+id/tvMood6" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="wrap_content" -->
+    <!-- android:layout_alignParentLeft="true" -->
+    <!-- android:layout_alignParentTop="true" -->
+    <!-- android:layout_marginLeft="5dp" -->
+    <!-- android:layout_marginTop="5dp" -->
+    <!-- android:text="@string/sSurpriseMe" -->
+    <!-- android:textColor="@android:color/white" -->
+    <!-- android:textSize="18sp" /> -->
+
+
+    <!-- <ImageView -->
+    <!-- android:id="@+id/ivMood6" -->
+    <!-- android:layout_width="wrap_content" -->
+    <!-- android:layout_height="match_parent" -->
+    <!-- android:layout_below="@+id/tvMood6" -->
+    <!-- android:layout_marginLeft="20dp" -->
+    <!-- android:background="@drawable/surpriseme" /> -->
+    <!-- </RelativeLayout> -->
+    <!-- </TableRow> -->
+    <!-- </TableLayout> -->
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="341.22"
+        android:paddingBottom="60dp"
+        android:paddingTop="30dp" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="15dp"
+            android:layout_weight="1" >
+
+            <RelativeLayout
+                android:id="@+id/rlBussines"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/tile_box" >
+
+                <ImageView
+                    android:id="@+id/ivMood1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvMood1"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/winedown" />
+
+                <TextView
+                    android:id="@+id/tvMood1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sWineDown"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/tile_box" >
+
+                <TextView
+                    android:id="@+id/tvMood2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sSummerBBQ"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ivMood2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvMood2"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/summerbbq" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/tile_box" >
+
+                <TextView
+                    android:id="@+id/tvMood3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sCelebration"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ivMood3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvMood3"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/celebration" />
+            </RelativeLayout>
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1" >
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/tile_box" >
+
+                <TextView
+                    android:id="@+id/tvMood4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sGameNight"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ivMood4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvMood4"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/gamenight" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="25dp"
+                android:layout_weight="1"
+                android:background="@drawable/tile_box" >
+
+                <TextView
+                    android:id="@+id/tvMood5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sBadDay"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ivMood5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvMood5"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/badday" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/tile_box" >
+
+                <TextView
+                    android:id="@+id/tvMood6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/sSurpriseMe"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/ivMood6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvMood6"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/surpriseme" />
+            </RelativeLayout>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
