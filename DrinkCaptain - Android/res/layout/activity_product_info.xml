@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/shopping_cart_bg" >
+
+    <ImageView
+        android:id="@+id/ivWine"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/wine" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ivWine"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/ivWine"
+        android:text="@string/sName"
+        android:textColor="@color/shopping_cart_tv"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="5dp"
+        android:text="@string/sFrance"
+        android:textColor="@color/shopping_cart_price"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/tvVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView3"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="5dp"
+        android:text="@string/s1"
+        android:textColor="@color/shopping_cart_price"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvName"
+        android:layout_below="@+id/tvName"
+        android:layout_marginTop="25dp"
+        android:text="@string/sV"
+        android:textColor="@color/shopping_cart_tv"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvVolume"
+        android:layout_below="@+id/tvVolume"
+        android:layout_marginTop="10dp"
+        android:text="@string/sPrice"
+        android:textColor="@color/shopping_cart_tv"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView4"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="10dp"
+        android:text="@string/s10.99"
+        android:textColor="@color/shopping_cart_price"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/ibMinus"
+        android:layout_width="40dp"
+        android:layout_height="31dp"
+        android:layout_alignLeft="@+id/ibPlus"
+        android:layout_below="@+id/ibPlus"
+        android:background="@drawable/quantity_minus"
+        android:onClick="minus" />
+
+    <Button
+        android:id="@+id/ibQuantity"
+        android:layout_width="62dp"
+        android:layout_height="62dp"
+        android:layout_alignLeft="@+id/tvPrice"
+        android:layout_alignTop="@+id/ibPlus"
+        android:background="@drawable/quantity_bg"
+        android:text="@string/s1"
+        android:textColor="@color/listview_quantity_tv"
+        android:textSize="28sp" />
+
+    <Button
+        android:id="@+id/ibPlus"
+        android:layout_width="40dp"
+        android:layout_height="31dp"
+        android:layout_below="@+id/tvPrice"
+        android:layout_marginTop="14dp"
+        android:layout_toRightOf="@+id/ibQuantity"
+        android:background="@drawable/quantity_plus"
+        android:onClick="add" />
+
+    <Button
+        android:id="@+id/bCheckout"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_alignBaseline="@+id/ibQuantity"
+        android:layout_alignBottom="@+id/ibQuantity"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@+id/ibMinus"
+        android:onClick="addToCart"
+        android:text="@string/sAdd" />
+
+    <TextView
+        android:id="@+id/TextView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/ibQuantity"
+        android:layout_below="@+id/ibQuantity"
+        android:layout_marginTop="10dp"
+        android:text="@string/sTotal"
+        android:textColor="@color/shopping_cart_tv"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView2"
+        android:layout_below="@+id/TextView2"
+        android:layout_marginTop="10dp"
+        android:text="@string/s175.68"
+        android:textColor="@color/shopping_cart_price"
+        android:textSize="24sp" />
+
+</RelativeLayout>
