@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp" >
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/sFrance"
+        android:textColor="@color/shopping_cart_price"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tvVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvName"
+        android:layout_below="@+id/tvName"
+        android:layout_marginTop="20dp"
+        android:text="@string/sVolume"
+        android:textColor="@color/shopping_cart_tv"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textview1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvVolume"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/tvVolume"
+        android:text="@string/sQuantity"
+        android:textColor="@color/shopping_cart_tv"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tvQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textview1"
+        android:layout_alignBottom="@+id/textview1"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/textview1"
+        android:text="@string/s1"
+        android:textColor="@color/shopping_cart_tv"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvName"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/tvPrice"
+        android:text="@string/sCAD"
+        android:textColor="@color/shopping_cart_price"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="38dp"
+        android:text="@string/s20"
+        android:textColor="@color/shopping_cart_price"
+        android:textSize="32sp" />
+
+</RelativeLayout>

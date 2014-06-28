@@ -1,17 +1,32 @@
 package com.crowdquarter.drinkcaptain;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -80,6 +95,9 @@ public class MainMenuActivity extends Activity {
 		} else {
 
 		}
+
+		new MyAsyncTask()
+				.execute("http://devdc.azurewebsites.net/api/productcategories");
 	}
 
 	private void selectItem(int position) {
@@ -143,5 +161,79 @@ public class MainMenuActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+	}
+
+	private class MyAsyncTask extends AsyncTask<String, String, String> {
+
+		protected String doInBackground(String... args) {
+			String result = null;
+			URL url;
+			try {
+				url = new URL(args[0]);
+				URLConnection connection = url.openConnection();
+
+				HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+				int responseCode = httpConnection.getResponseCode();
+
+				// Tests if responseCode == 200 Good Connection
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+
+					// Reads data from the connection
+					InputStream is = httpConnection.getInputStream();
+
+					BufferedReader bufferReader = null;
+					try {
+						bufferReader = new BufferedReader(
+								new InputStreamReader(is, "UTF-8"), 8);
+					} catch (UnsupportedEncodingException e1) {
+						e1.printStackTrace();
+					}
+					StringBuilder stringBuilder = new StringBuilder();
+
+					String line;
+					try {
+						while ((line = bufferReader.readLine()) != null) {
+							stringBuilder.append(line);
+						}
+						result = stringBuilder.toString();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally {
+						if (is != null)
+							try {
+								is.close();
+							} catch (Exception e) {
+							}
+					}
+				}
+
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return result;
+
+		}
+
+		// Changes the values for a bunch of TextViews on the GUI
+		protected void onPostExecute(String result) {
+			try {
+				JSONObject jObject = new JSONObject(result);
+
+				Log.v("jObject", jObject.getJSONArray("ProductCategory")
+						.toString());
+				JSONArray jArray = jObject.getJSONArray("ProductCategory");
+				for (int i = 0; i < jArray.length(); i++) {
+					Log.v("Category", jArray.getJSONObject(i).getString("name"));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

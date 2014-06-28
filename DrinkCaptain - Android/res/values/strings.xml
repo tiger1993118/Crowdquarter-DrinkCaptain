@@ -24,14 +24,20 @@
     <string name="sName">Name</string>
     <string name="sFrance">France</string>
     <string name="sVolume">750ml</string>
+    <string name="sQuantity">Quantity:</string>
     <string name="sPrice">Price</string>
     <string name="sV">Volume</string>
     <string name="s$40">$40</string>
+    <string name="s20">20</string>
+    <string name="sCAD">CAD</string>
     <string name="s1">1</string>
     <string name="sAdd">Add</string>
     <string name="sTax">TAX</string>
     <string name="s25.99">25.99</string>
     <string name="sShipping">SHIPPING</string>
+    <string name="sAddress">12 University Ave\nToronto, ON\nM1B 1A4</string>
+    <string name="sPayment">Card Ending in 0000\n exp 10/2008 \n Arya Stack</string>
+    <string name="sBilling">12 University Ave\nToronto, ON\nM1B 1A4</string>
     <string name="s10.99">10.99</string>
     <string name="sTotal">TOTAL</string>
     <string name="s175.68">175.68</string>
@@ -39,6 +45,7 @@
     <string name="sMinus">-</string>
     <string name="sOpen">Open</string>
     <string name="sClose">Close</string>
+    <string name="sEdit">Edit</string>
 
     <string-array name="aDrawerList">
         <item>Bartender</item>

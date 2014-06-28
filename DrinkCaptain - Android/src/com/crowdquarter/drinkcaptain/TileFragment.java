@@ -9,8 +9,8 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,10 +56,12 @@ public class TileFragment extends Fragment {
 			sDay = getResources().getStringArray(R.array.aDays)[day];
 			background = getResources().obtainTypedArray(R.array.aTileBgs)
 					.getResourceId(day, 0);
+
 		} else {
-			sDay = getResources().getStringArray(R.array.aDays)[0];
+			day = 0;
+			sDay = getResources().getStringArray(R.array.aDays)[day];
 			background = getResources().obtainTypedArray(R.array.aTileBgs)
-					.getResourceId(0, 0);
+					.getResourceId(day, 0);
 		}
 		if (5 <= hour && hour < 12)
 			sTime = getResources().getStringArray(R.array.aTimes)[0];

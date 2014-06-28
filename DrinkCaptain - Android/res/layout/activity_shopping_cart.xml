@@ -24,6 +24,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:background="@color/shopping_cart_checkout"
+            android:onClick="checkout"
             android:text="@string/sCheckOut"
             android:textColor="@color/shopping_cart_button" />
 

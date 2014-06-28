@@ -8,11 +8,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 public class ShoppingCartActivity extends Activity {
@@ -52,9 +51,6 @@ public class ShoppingCartActivity extends Activity {
 				listShoppingCart);
 		lvShoppingCart.setAdapter(shoppingCartAdapter);
 
-		// lvShoppingCart
-		// .setOnItemLongClickListener(new DeleteShoppingCartListener());
-
 		SwipeDismissTouchListener touchListener = new SwipeDismissTouchListener(
 				lvShoppingCart,
 				new SwipeDismissTouchListener.DismissCallbacks() {
@@ -75,25 +71,9 @@ public class ShoppingCartActivity extends Activity {
 		lvShoppingCart.setOnTouchListener(touchListener);
 	}
 
-	public class DeleteShoppingCartListener implements OnItemLongClickListener {
-
-		@Override
-		public boolean onItemLongClick(AdapterView<?> parent, View view,
-				int position, long id) {
-
-			listShoppingCart.remove(position);
-			shoppingCartAdapter.notifyDataSetChanged();
-			lvShoppingCart.invalidate();
-
-			for (JSONObject jsonObj : listShoppingCart) {
-				setShoppingCartString.add(jsonObj.toString());
-			}
-
-			settings.edit()
-					.putStringSet(ShoppingCartActivity.PRER_SHOPPING_CART,
-							setShoppingCartString).commit();
-
-			return true;
-		}
+	public void checkout(View view) {
+		Intent iCheckout = new Intent(getApplicationContext(),
+				CheckoutActivity.class);
+		startActivity(iCheckout);
 	}
 }

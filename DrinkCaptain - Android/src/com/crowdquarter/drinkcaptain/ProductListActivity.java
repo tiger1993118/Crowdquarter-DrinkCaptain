@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -90,7 +89,7 @@ public class ProductListActivity extends Activity {
 						.getResourceId(moodIndex, 0)));
 
 		merchant_id = getResources().getStringArray(R.array.aMerchantIds)[moodIndex];
-		Log.v("id", merchant_id + "");
+
 		lvProducts = (ListView) findViewById(R.id.lvProducts);
 		lvProducts.setOnItemClickListener(goProductInfoListener);
 		lvProducts.setOnItemLongClickListener(goSearchListener);
