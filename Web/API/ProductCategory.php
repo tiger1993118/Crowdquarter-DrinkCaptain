@@ -2,7 +2,7 @@
 require_once('../system/mysql.class.php');
 class ProductCategory
 {
-	var $db = null;
+    var $db = null;
     var $ID = null;
     var $Name = null;
 
@@ -37,5 +37,43 @@ class ProductCategory
 }';
         return $product_category_list;    	
     }
+
+
+    /**
+     * Add a new product to database
+     *
+     * @return boolean Returns TRUE on success or FALSE on error
+     */  
+    public function add()
+    {
+        $values=null;
+        $values["name"] = MySQL::SQLValue($this->Name,MySQL::SQLVALUE_TEXT);
+        $result = $this->db->InsertRow("ProductCategory", $values);
+        $this->ID = $this->db->GetLastInsertID();
+        return true;      
+    }
+
+    /**
+     * Get the product category ID by name, if the category exists, return the ID.
+     * If the category does not exist, add it to database and return the new ID.
+     *
+     * @return integer the ID of the category name
+     */  
+    public function getIDByName()
+    {
+        $values=null;
+        $values = [" name = " . MySQL::SQLValue($this->Name,MySQL::SQLVALUE_TEXT)];
+        $result = $this->db->SelectRows("ProductCategory", $values);
+        if ($this->db->RowCount() > 0)
+        {
+          return $this->db->RecordsArray()[0]['product_category_id'];
+        }
+        else
+        {
+          $this->add();
+          return $this->ID;
+        }
+    }
+
 
 }

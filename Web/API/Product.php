@@ -8,6 +8,7 @@ class Product
     var $Price = null;
     var $Volume = null;
     var $ImageURL = null;
+    var $ProductCategoryID = null;
 
     function __construct(){
         $this->db = new MySQL(true);
@@ -34,6 +35,27 @@ class Product
   ]
 }';
         return $product;
+    }
+
+    /**
+     * Add a new product to database or update it if it already exists
+     *
+     * @return boolean Returns TRUE on success or FALSE on error
+     */  
+    public function save()
+    {
+        $values=null;
+        $values["product_id"] = MySQL::SQLValue($this->ID,MySQL::SQLVALUE_NUMBER);
+        $values["name"] = MySQL::SQLValue($this->Name,MySQL::SQLVALUE_TEXT);
+        $values["price"] = MySQL::SQLValue($this->Price,MySQL::SQLVALUE_NUMBER);
+        $values["volume"] = MySQL::SQLValue($this->Volume,MySQL::SQLVALUE_NUMBER);
+        $values["imageURL"] = MySQL::SQLValue($this->ImageURL,MySQL::SQLVALUE_TEXT);
+        $values["product_category_id"] = MySQL::SQLValue($this->ProductCategoryID,MySQL::SQLVALUE_NUMBER);
+
+        $where=null;
+        $where = [" product_id = " . MySQL::SQLValue($this->ID,MySQL::SQLVALUE_NUMBER)];
+
+        return $this->db->AutoInsertUpdate("Product", $values, $where);      
     }
 
 }
