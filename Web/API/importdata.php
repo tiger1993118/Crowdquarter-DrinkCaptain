@@ -1,4 +1,9 @@
 <?php
+
+///
+//This file is used to import some sample data from LCBO to local DB.
+//It will read the product ids from an array and get product information of each product using LCBO API then insert it into database
+///
 set_time_limit(0);
 require_once('Product.php');
 require_once('ProductCategory.php');

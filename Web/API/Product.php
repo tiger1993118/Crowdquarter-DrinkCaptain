@@ -23,17 +23,21 @@ class Product
     public function getByID()
     {
         //Now return a hard coded JSON data
-        $product = '{
-  "Product": [
-    {
-      "id": 1,
-      "name": "Molson Canadian",
-      "volume": "2838",
-      "price": "1350",
-      "imageURL": "http:\/\/lcbo.com\/assets\/products\/720x720\/0300699.jpg"
-    }
-  ]
-}';
+//         $product = '{
+//   "Product": [
+//     {
+//       "id": 1,
+//       "name": "Molson Canadian",
+//       "volume": "2838",
+//       "price": "1350",
+//       "imageURL": "http:\/\/lcbo.com\/assets\/products\/720x720\/0300699.jpg"
+//     }
+//   ]
+// }';
+      //read data from real database
+        $sql = 'Select product_id as "id", name, volume, price, imageURL from Product Where product_id = ' . MySQL::SQLValue($this->ID,MySQL::SQLVALUE_NUMBER);
+        $result = $this->db->Query($sql)->fetch_all(MYSQLI_ASSOC);
+        $product = json_encode(array("Product" => $result));
         return $product;
     }
 
@@ -57,5 +61,15 @@ class Product
 
         return $this->db->AutoInsertUpdate("Product", $values, $where);      
     }
+
+  /**
+   * Get all products
+   *
+   * @return ARRAY return the products in associate array
+   */
+    public function all()
+    {
+      return $this->db->Query('Select * from Product')->fetch_all(MYSQLI_ASSOC);
+    }  
 
 }

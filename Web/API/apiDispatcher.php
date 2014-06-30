@@ -43,7 +43,7 @@ switch ($action) {
 			header("HTTP/1.1 400 Bad Request", true, 400);
 			exit ('Invalid call');
 		}
-		$product_id = isset($_GET['id']);
+		$product_id = $_GET['id'];
 		$objProduct = new Product();
 		$objProduct->ID = $product_id;
 		echo $objProduct->getByID();

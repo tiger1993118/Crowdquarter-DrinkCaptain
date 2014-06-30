@@ -2,6 +2,6 @@ RewriteEngine On
 RewriteBase /api/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^recommendproduct/([0-9]+)/([0-9]+)/([0-9]+)$ apiDispatcher.php?action=GetRecommendProduct&w=$1&mc=$2&pc=$3 [QSA]
+RewriteRule ^recommendproduct/([0-6])/([0-9]+)/([0-9]+)$ apiDispatcher.php?action=GetRecommendProduct&w=$1&mc=$2&pc=$3 [QSA]
 RewriteRule ^productcategories$ apiDispatcher.php?action=GetProductCategory [QSA]
 RewriteRule ^product/([0-9]+)$ apiDispatcher.php?action=GetProductDetail&id=$1 [QSA]

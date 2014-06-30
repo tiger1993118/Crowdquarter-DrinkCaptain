@@ -19,22 +19,25 @@ class ProductCategory
     public function getProductCategoryList()
     {
         //Now return a hard coded JSON data
-        $product_category_list = '{
-  "ProductCategory": [
-    {
-      "id": 1,
-      "name": "Wine"
-    },
-    {
-      "id": 2,
-      "name": "Beer"
-    },
-    {
-      "id": 3,
-      "name": "Rum"
-    }
-  ]
-}';
+//         $product_category_list = '{
+//   "ProductCategory": [
+//     {
+//       "id": 1,
+//       "name": "Wine"
+//     },
+//     {
+//       "id": 2,
+//       "name": "Beer"
+//     },
+//     {
+//       "id": 3,
+//       "name": "Rum"
+//     }
+//   ]
+// }';
+      //read data from real database
+      $result = $this->db->Query('Select product_category_id as "id", name from ProductCategory')->fetch_all(MYSQLI_ASSOC);
+      $product_category_list = json_encode(array("ProductCategory" => $result));
         return $product_category_list;    	
     }
 
@@ -56,7 +59,9 @@ class ProductCategory
     /**
      * Get the product category ID by name, if the category exists, return the ID.
      * If the category does not exist, add it to database and return the new ID.
-     *
+     * It is used while important data from LCBO, since the category name from LCBO is a string, 
+     * we need to save them to the table ProductCategory and use the ID in the table Product.
+     * 
      * @return integer the ID of the category name
      */  
     public function getIDByName()
