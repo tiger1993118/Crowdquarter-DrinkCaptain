@@ -2,6 +2,7 @@
 require_once('Product.php');
 require_once('RecommendCategory.php');
 require_once('ProductCategory.php');
+require_once('MoodCategory.php');
 
 if (!isset($_GET['action']))
 {
@@ -47,6 +48,12 @@ switch ($action) {
 		$objProduct = new Product();
 		$objProduct->ID = $product_id;
 		echo $objProduct->getByID();
+		break;
+	//
+	case 'GetMoodCategory':
+		$objMoodCategory = new MoodCategory();
+		echo $objMoodCategory->getMoodCategoryList();
+		break;
 		break;
 	
 	default:
