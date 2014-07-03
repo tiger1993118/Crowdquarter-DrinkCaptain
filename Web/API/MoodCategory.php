@@ -20,7 +20,7 @@ class MoodCategory
     {
 
       //read data from real database
-      $result = $this->db->Query('Select mood_category_id as "id", name from MoodCategory')->fetch_all(MYSQLI_ASSOC);
+      $result = $this->db->Query('Select mood_category_id as "id", name, description from MoodCategory')->fetch_all(MYSQLI_ASSOC);
       $mood_category_list = json_encode(array("MoodCategory" => $result));
         return $mood_category_list;    	
     }
