@@ -2,6 +2,7 @@ package com.crowdquarter.drinkcaptain;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,14 +11,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class CategoryListAdapter extends BaseAdapter {
+public class RecommendListAdapter extends BaseAdapter {
 	private Context context;
 	private JSONArray jArray;
 
-	public CategoryListAdapter(Context context, JSONArray jArray) {
+	public RecommendListAdapter(Context context, JSONArray jArray) {
 		this.context = context;
 		this.jArray = jArray;
-
 	}
 
 	@Override
@@ -28,24 +28,20 @@ public class CategoryListAdapter extends BaseAdapter {
 	@Override
 	public Object getItem(int position) {
 		try {
-			return jArray.getJSONObject(position).getString("name");
+			return jArray.get(position);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
 
+	public void updateArray(JSONArray newJArray) {
+		this.jArray = newJArray;
 	}
 
 	@Override
 	public long getItemId(int position) {
-		try {
-			return Integer.parseInt(jArray.getJSONObject(position).getString(
-					"id"));
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return 0;
-		}
-
+		return position;
 	}
 
 	@Override
@@ -56,12 +52,19 @@ public class CategoryListAdapter extends BaseAdapter {
 				parent, false);
 
 		TextView tvName = (TextView) singleRow.findViewById(R.id.tvName);
+		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
+
 		try {
-			tvName.setText(jArray.getJSONObject(position).getString("name"));
+			JSONObject productObject = jArray.getJSONObject(position);
+
+			tvName.setText(productObject.getString("name"));
+			tvPrice.setText("$" + productObject.getString("price"));
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 		return singleRow;
 	}
+
 }

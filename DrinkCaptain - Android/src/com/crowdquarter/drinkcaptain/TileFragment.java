@@ -159,37 +159,37 @@ public class TileFragment extends Fragment {
 		@Override
 		public void onClick(View v) {
 			Intent iProductList = new Intent(getActivity(),
-					MoodListActivity.class);
-			iProductList.putExtra(MoodListActivity.INTENT_BG, background);
-			iProductList.putExtra(MoodListActivity.INTENT_DAY_INDEX, day);
+					ProductListActivity.class);
+			iProductList.putExtra(ProductListActivity.INTENT_BG, background);
+			iProductList.putExtra(ProductListActivity.INTENT_DAY_INDEX, day);
 			switch (v.getId()) {
 			case R.id.ivMood1:
-				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+				iProductList.putExtra(ProductListActivity.INTENT_MOOD_INDEX,
 						aMoodsIndex[0]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood2:
-				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+				iProductList.putExtra(ProductListActivity.INTENT_MOOD_INDEX,
 						aMoodsIndex[1]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood3:
-				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+				iProductList.putExtra(ProductListActivity.INTENT_MOOD_INDEX,
 						aMoodsIndex[2]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood4:
-				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+				iProductList.putExtra(ProductListActivity.INTENT_MOOD_INDEX,
 						aMoodsIndex[3]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood5:
-				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+				iProductList.putExtra(ProductListActivity.INTENT_MOOD_INDEX,
 						aMoodsIndex[4]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood6:
-				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+				iProductList.putExtra(ProductListActivity.INTENT_MOOD_INDEX,
 						aMoodsIndex[5]);
 				startActivity(iProductList);
 				break;

@@ -29,14 +29,14 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ProductListActivity extends Activity {
+public class RecommendListActivity extends Activity {
 	private ListView lvProducts;
 
 	private JSONObject jObjectMood;
 
 	private int background, dayIndex, moodIndex, productIndex;
 
-	ProductListAdapter productAdapter;
+	RecommendListAdapter productAdapter;
 
 	public final static String INTENT_PRODUCT = "com.crowdquarter.drinkcaptain.product";
 
@@ -46,13 +46,13 @@ public class ProductListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_list);
 
-		background = getIntent().getIntExtra(MoodListActivity.INTENT_BG, 0);
-		dayIndex = getIntent()
-				.getIntExtra(MoodListActivity.INTENT_DAY_INDEX, 0);
-		moodIndex = getIntent().getIntExtra(MoodListActivity.INTENT_MOOD_INDEX,
-				0);
+		background = getIntent().getIntExtra(ProductListActivity.INTENT_BG, 0);
+		dayIndex = getIntent().getIntExtra(
+				ProductListActivity.INTENT_DAY_INDEX, 0);
+		moodIndex = getIntent().getIntExtra(
+				ProductListActivity.INTENT_MOOD_INDEX, 0);
 		productIndex = getIntent().getIntExtra(
-				MoodListActivity.INTENT_PRODUCT_INDEX, 0);
+				ProductListActivity.INTENT_PRODUCT_INDEX, 0);
 
 		// Set Background Resource
 		RelativeLayout rlBackground = (RelativeLayout) findViewById(R.id.rlBackground);
@@ -80,7 +80,7 @@ public class ProductListActivity extends Activity {
 		lvProducts.setOnItemClickListener(goProductInfoListener);
 		lvProducts.setOnItemLongClickListener(goSearchListener);
 
-		productAdapter = new ProductListAdapter(ProductListActivity.this,
+		productAdapter = new RecommendListAdapter(RecommendListActivity.this,
 				new JSONArray());
 
 		moodIndex++;

@@ -48,7 +48,7 @@ public class ProductInfoActivity extends Activity {
 
 		try {
 			jsonProduct = new JSONObject(getIntent().getStringExtra(
-					ProductListActivity.INTENT_PRODUCT));
+					RecommendListActivity.INTENT_PRODUCT));
 			// Set Up Infos
 			tvName.setText(jsonProduct.getString("name"));
 			tvPrice.setText(jsonProduct.getString("price"));

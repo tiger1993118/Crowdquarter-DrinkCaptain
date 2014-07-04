@@ -21,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="MoodListActivity" >
-        </activity>
         <activity android:name="ProductListActivity" >
+        </activity>
+        <activity android:name="RecommendListActivity" >
         </activity>
         <activity android:name="ProductInfoActivity" >
         </activity>
