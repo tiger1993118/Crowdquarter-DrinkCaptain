@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -58,7 +53,7 @@ and open the template in the editor.
 				</div>
 			</li>
 			<li>
-				<span class='apimethod'>GET /api/recommendproduct/{weekday}/{mood_category_id}/{product_category_id}</span> - Get all recommend product list
+				<span class='apimethod'>GET /api/recommendproduct/{weekday}/{mood_category_id}/{product_category_id}</span> - Get all recommend product list, currently the weekends (Friday, Saturday, Sunday) return the same result.
 				<div>Sample: /api/recommendproduct/0/1/2 - get the recommend product list for Sunday, Wine Down (id = 1), Beer (id = 2)</div>
 				<div>
 					Returned JSON data sample: <br>
@@ -106,6 +101,37 @@ and open the template in the editor.
 					</pre>
 				</div>
 			</li>
+      <li><span class='apimethod'>GET /api/moodcategories</span> - Get all mood categories (Bad Day, Game Night...)
+        <div>
+          Returned JSON data sample: <br>
+          <pre>
+{
+  "MoodCategory": [
+    {
+      "id": "1",
+      "name": "Wine Down",
+      "description": "Great drinks to help you unwind from your busy day"
+    },
+    {
+      "id": "2",
+      "name": "Bad Day",
+      "description": "Good Drinks for Bad Days"
+    },
+    {
+      "id": "3",
+      "name": "Celebration",
+      "description": "Great drinks worth celebrating with"
+    },
+    {
+      "id": "4",
+      "name": "Taste of Italy",
+      "description": "Discover what Italy has to offer"
+    }
+  ]
+}          
+          </pre>
+        </div>
+      </li>
 		</ul>
 
     </body>

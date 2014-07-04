@@ -2,6 +2,7 @@
 require_once('Product.php');
 require_once('RecommendCategory.php');
 require_once('ProductCategory.php');
+require_once('MoodCategory.php');
 
 if (!isset($_GET['action']))
 {
@@ -20,6 +21,12 @@ switch ($action) {
 			exit ('Invalid call');
 		}		
 		$weekday = $_GET['w'];
+		//set weekends (Friday, Saturday, Sunday) return the same results (could be updated if we decide to display different information later)
+		if (($weekday==5) || ($weekday==6))
+		{
+			$weekday = 0;
+		}
+
 		$mood_category_id = $_GET['mc'];
 		$product_category_id = $_GET['pc'];
 		$objRecommendCategory = new RecommendCategory();
@@ -43,10 +50,16 @@ switch ($action) {
 			header("HTTP/1.1 400 Bad Request", true, 400);
 			exit ('Invalid call');
 		}
-		$product_id = isset($_GET['id']);
+		$product_id = $_GET['id'];
 		$objProduct = new Product();
 		$objProduct->ID = $product_id;
 		echo $objProduct->getByID();
+		break;
+	//
+	case 'GetMoodCategory':
+		$objMoodCategory = new MoodCategory();
+		echo $objMoodCategory->getMoodCategoryList();
+		break;
 		break;
 	
 	default:
