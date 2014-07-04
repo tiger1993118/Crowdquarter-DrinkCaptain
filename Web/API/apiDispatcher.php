@@ -21,6 +21,12 @@ switch ($action) {
 			exit ('Invalid call');
 		}		
 		$weekday = $_GET['w'];
+		//set weekends (Friday, Saturday, Sunday) return the same results (could be updated if we decide to display different information later)
+		if (($weekday==5) || ($weekday==6))
+		{
+			$weekday = 0;
+		}
+
 		$mood_category_id = $_GET['mc'];
 		$product_category_id = $_GET['pc'];
 		$objRecommendCategory = new RecommendCategory();
