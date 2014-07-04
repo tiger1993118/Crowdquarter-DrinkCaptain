@@ -47,11 +47,8 @@ public class ShoppingCartActivity extends Activity {
 		shoppingCartAdapter = new ShoppingCartListAdapter(this,
 				listShoppingCart);
 
-<<<<<<< HEAD
 		lvShoppingCart.setAdapter(shoppingCartAdapter);
 
-=======
->>>>>>> FETCH_HEAD
 		SwipeDismissTouchListener touchListener = new SwipeDismissTouchListener(
 				lvShoppingCart,
 				new SwipeDismissTouchListener.DismissCallbacks() {

@@ -45,7 +45,6 @@ public class CheckoutCartAdapter extends BaseAdapter {
 				parent, false);
 
 		TextView tvName = (TextView) singleRow.findViewById(R.id.tvName);
-<<<<<<< HEAD
 		TextView tvVolume = (TextView) singleRow.findViewById(R.id.tvVolume);
 		TextView tvQuantity = (TextView) singleRow.findViewById(R.id.tvQuanty);
 		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
@@ -58,25 +57,7 @@ public class CheckoutCartAdapter extends BaseAdapter {
 			tvVolume.setText(productObject.getString("volume"));
 			tvQuantity.setText(productObject.getString("quantity"));
 			tvPrice.setText("$" + productObject.getString("price"));
-=======
-		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
-		TextView tvQuantity = (TextView) singleRow
-				.findViewById(R.id.tvQuantity);
-		TextView tvVolume = (TextView) singleRow.findViewById(R.id.tvVolume);
 
-		JSONObject productObject = productObjects.get(position);
-		try {
-			String[] info = productObject.getString("name").split("-");
-
-			tvName.setText(info[0]);
-			tvVolume.setText(info[1]);
-
-			tvQuantity.setText(productObject.getString("quantity"));
-			if (productObject.getString("price").length() > 0)
-				tvPrice.setText(productObject.getString("price"));
-			else
-				tvPrice.setText("unknown");
->>>>>>> FETCH_HEAD
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

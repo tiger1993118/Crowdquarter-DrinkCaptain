@@ -117,25 +117,20 @@ public class TileFragment extends Fragment {
 		if (1 <= day && day <= 4) { // DAY
 			sDay = getResources().getStringArray(R.array.aDays)[day];
 			background = getResources().obtainTypedArray(R.array.aTileBgs)
-<<<<<<< HEAD
-					.getResourceId(day, 0); // got Tile background for weekday
+
+			.getResourceId(day, 0); // got Tile background for weekday
 			aStringMoodsIndex = getResources()
 					.getStringArray(R.array.aDayMoods)[day].split("_");
-=======
-					.getResourceId(day, 0);
 
->>>>>>> FETCH_HEAD
 		} else {
 			day = 0;
 			sDay = getResources().getStringArray(R.array.aDays)[day];
 			background = getResources().obtainTypedArray(R.array.aTileBgs)
-<<<<<<< HEAD
-					.getResourceId(0, 0);// got Tile background for weekend
+
+			.getResourceId(0, 0);// got Tile background for weekend
 			aStringMoodsIndex = getResources()
 					.getStringArray(R.array.aDayMoods)[0].split("_");
-=======
-					.getResourceId(day, 0);
->>>>>>> FETCH_HEAD
+
 		}
 
 		if (5 <= hour && hour < 12) // HOUR

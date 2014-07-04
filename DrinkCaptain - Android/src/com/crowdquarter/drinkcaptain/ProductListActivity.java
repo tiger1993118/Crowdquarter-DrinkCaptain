@@ -76,11 +76,6 @@ public class ProductListActivity extends Activity {
 		ivMood.setImageResource(getResources().obtainTypedArray(
 				R.array.aMoodsDrawable).getResourceId(moodIndex, 0));
 
-<<<<<<< HEAD
-=======
-		merchant_id = getResources().getStringArray(R.array.aMerchantIds)[moodIndex];
-
->>>>>>> FETCH_HEAD
 		lvProducts = (ListView) findViewById(R.id.lvProducts);
 		lvProducts.setOnItemClickListener(goProductInfoListener);
 		lvProducts.setOnItemLongClickListener(goSearchListener);

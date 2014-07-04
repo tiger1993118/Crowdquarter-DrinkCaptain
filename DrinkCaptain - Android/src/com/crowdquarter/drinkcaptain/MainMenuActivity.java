@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -121,11 +120,6 @@ public class MainMenuActivity extends Activity {
 
 		}
 
-<<<<<<< HEAD
-=======
-		new MyAsyncTask()
-				.execute("http://devdc.azurewebsites.net/api/productcategories");
->>>>>>> FETCH_HEAD
 	}
 
 	private void selectItem(int position) {
@@ -191,7 +185,6 @@ public class MainMenuActivity extends Activity {
 		super.onPause();
 	}
 
-<<<<<<< HEAD
 	public String isToString(InputStream is) {
 		String sReturn = null, line;
 		BufferedReader bufferReader = null;
@@ -219,23 +212,17 @@ public class MainMenuActivity extends Activity {
 	class MyAsyncTask extends AsyncTask<String, String, String> {
 
 		String keyPref, keyJson;
-=======
-	private class MyAsyncTask extends AsyncTask<String, String, String> {
->>>>>>> FETCH_HEAD
 
 		protected String doInBackground(String... args) {
 			String result = null;
 			URL url;
 			try {
 				url = new URL(args[0]);
-<<<<<<< HEAD
 
 				keyPref = args[1];
 
 				keyJson = args[2];
 
-=======
->>>>>>> FETCH_HEAD
 				URLConnection connection = url.openConnection();
 
 				HttpURLConnection httpConnection = (HttpURLConnection) connection;
@@ -248,46 +235,13 @@ public class MainMenuActivity extends Activity {
 					// Reads data from the connection
 					InputStream is = httpConnection.getInputStream();
 
-<<<<<<< HEAD
 					result = isToString(is);
 				}
 
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
-=======
-					BufferedReader bufferReader = null;
-					try {
-						bufferReader = new BufferedReader(
-								new InputStreamReader(is, "UTF-8"), 8);
-					} catch (UnsupportedEncodingException e1) {
-						e1.printStackTrace();
-					}
-					StringBuilder stringBuilder = new StringBuilder();
 
-					String line;
-					try {
-						while ((line = bufferReader.readLine()) != null) {
-							stringBuilder.append(line);
-						}
-						result = stringBuilder.toString();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						if (is != null)
-							try {
-								is.close();
-							} catch (Exception e) {
-							}
-					}
-				}
-
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
->>>>>>> FETCH_HEAD
 				e.printStackTrace();
 			}
 
@@ -295,7 +249,6 @@ public class MainMenuActivity extends Activity {
 
 		}
 
-<<<<<<< HEAD
 		protected void onPostExecute(String result) {
 			try {
 				JSONArray jArray = new JSONObject(result).getJSONArray(keyJson);
@@ -311,22 +264,4 @@ public class MainMenuActivity extends Activity {
 		}
 	}
 
-=======
-		// Changes the values for a bunch of TextViews on the GUI
-		protected void onPostExecute(String result) {
-			try {
-				JSONObject jObject = new JSONObject(result);
-
-				Log.v("jObject", jObject.getJSONArray("ProductCategory")
-						.toString());
-				JSONArray jArray = jObject.getJSONArray("ProductCategory");
-				for (int i = 0; i < jArray.length(); i++) {
-					Log.v("Category", jArray.getJSONObject(i).getString("name"));
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
-	}
->>>>>>> FETCH_HEAD
 }

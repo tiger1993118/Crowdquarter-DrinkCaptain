@@ -16,23 +16,12 @@ import android.widget.ListView;
 
 public class CheckoutActivity extends Activity {
 
-<<<<<<< HEAD
 	private SharedPreferences settings;
-=======
-	SharedPreferences settings;
->>>>>>> FETCH_HEAD
 
 	private Set<String> setShoppingCartString;
 
 	private List<JSONObject> listShoppingCart = new ArrayList<JSONObject>();
 
-<<<<<<< HEAD
-=======
-	private ListView lvShoppingCart;
-
-	private ExpandableListView expandableLvInfo;
-
->>>>>>> FETCH_HEAD
 	private List<String> listInfo = new ArrayList<String>();
 
 	@Override
@@ -40,17 +29,10 @@ public class CheckoutActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_checkout);
 
-<<<<<<< HEAD
 		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
 
 		setShoppingCartString = settings.getStringSet(
 				MainMenuActivity.PRER_SHOPPING_CART, null);
-=======
-		settings = getSharedPreferences(ShoppingCartActivity.PRER, MODE_PRIVATE);
-
-		setShoppingCartString = settings.getStringSet(
-				ShoppingCartActivity.PRER_SHOPPING_CART, null);
->>>>>>> FETCH_HEAD
 
 		try {
 			for (String s : setShoppingCartString)
@@ -58,11 +40,10 @@ public class CheckoutActivity extends Activity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-<<<<<<< HEAD
+
 		ListView lvShoppingCart = (ListView) findViewById(R.id.lvProducts);
-=======
+
 		lvShoppingCart = (ListView) findViewById(R.id.lvProducts);
->>>>>>> FETCH_HEAD
 
 		lvShoppingCart.setAdapter(new CheckoutCartAdapter(
 				getApplicationContext(), listShoppingCart));
@@ -73,11 +54,8 @@ public class CheckoutActivity extends Activity {
 
 		CheckoutExpandableAdapter checkoutExpandableAdapter = new CheckoutExpandableAdapter(
 				getApplicationContext(), listInfo);
-<<<<<<< HEAD
+
 		ExpandableListView expandableLvInfo = (ExpandableListView) findViewById(R.id.expandableListView1);
-=======
-		expandableLvInfo = (ExpandableListView) findViewById(R.id.expandableListView1);
->>>>>>> FETCH_HEAD
 
 		expandableLvInfo.setAdapter(checkoutExpandableAdapter);
 
