@@ -21,13 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="CategoryListActivity" >
+        <activity android:name="MoodListActivity" >
         </activity>
         <activity android:name="ProductListActivity" >
         </activity>
         <activity android:name="ProductInfoActivity" >
         </activity>
         <activity android:name="ShoppingCartActivity" >
+        </activity>
+        <activity android:name="CheckoutActivity" >
         </activity>
     </application>
 

@@ -2,164 +2,190 @@ package com.crowdquarter.drinkcaptain;
 
 import java.util.Calendar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class TileFragment extends Fragment {
-	TextView tvMood1, tvMood2, tvMood3, tvMood4, tvMood5, tvMood6, tvTime;
-	LinearLayout llBackground;
-	ImageView ivMood1, ivMood2, ivMood3, ivMood4, ivMood5, ivMood6;
 
-	String sTime, sDay = "";
+	private SharedPreferences settings;
 
-	public final static String PREF_NAME = "MyPrefsFile";
-	public final static String ACCESS_TOKEN = "access_token";
-	public final static String REFRESH_TOKEN = "refresh_token";
-	public final static String TOKEN_EXPIRES = "expires";
-	public final static int MAIN_REQ_CODE = 777;
-	public final static String KEY_BG = "com.crowdquarter.drinkcaptain.bg";
-	public final static String KEY_MOOD_ID = "com.crowdquarter.drinkcaptain.moodIndex";
-	public final static String KEY_MOOD_IV = "com.crowdquarter.drinkcaptain.moodimage";
+	private int background, day, hour;
 
-	private int background;
-	private int[] moodsIndex;
-	private static String[] aStringCategoryMoods;
+	private int[] aMoodsIndex = new int[6];
 
-	public static TypedArray categoryMoods, dayMoods;
+	public static JSONArray jArrayMoods, jArrayProducts;
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		View root = inflater.inflate(R.layout.fragment_tile, container, false);
+
 		setUpVariable(root);
+
 		return root;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
 	}
 
 	@SuppressLint("Recycle")
 	private void setUpVariable(View view) {
 
-		Calendar calendar = Calendar.getInstance();
-		int day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		setTimeAndBackground(view);
 
-		if (1 <= day && day <= 4) {
+		settings = this.getActivity().getSharedPreferences(
+				MainMenuActivity.PRER, 0);
+
+		try {
+			jArrayMoods = new JSONArray(settings.getString(
+					MainMenuActivity.PREF_MODE, null));
+			Log.v("jArray", jArrayMoods.toString());
+			jArrayProducts = new JSONArray(settings.getString(
+					MainMenuActivity.PREF_PRODUCT, null));
+		} catch (JSONException e1) {
+			e1.printStackTrace();
+		}
+
+		TypedArray aMoodsDrawable = getResources().obtainTypedArray(
+				R.array.aMoodsDrawable);
+
+		ImageView ivMood1 = (ImageView) view.findViewById(R.id.ivMood1);
+		ImageView ivMood2 = (ImageView) view.findViewById(R.id.ivMood2);
+		ImageView ivMood3 = (ImageView) view.findViewById(R.id.ivMood3);
+		ImageView ivMood4 = (ImageView) view.findViewById(R.id.ivMood4);
+		ImageView ivMood5 = (ImageView) view.findViewById(R.id.ivMood5);
+		ImageView ivMood6 = (ImageView) view.findViewById(R.id.ivMood6);
+
+		// Set Up Tiles ImageView
+		ImageView[] aIv = { ivMood1, ivMood2, ivMood3, ivMood4, ivMood5,
+				ivMood6 };
+
+		for (int i = 0; i < aIv.length; i++) {
+			aIv[i].setBackgroundResource(aMoodsDrawable.getResourceId(
+					aMoodsIndex[i], 0));
+			aIv[i].setOnClickListener(new TileOnClickListener());
+		}
+
+		TextView tvMood1 = (TextView) view.findViewById(R.id.tvMood1);
+		TextView tvMood2 = (TextView) view.findViewById(R.id.tvMood2);
+		TextView tvMood3 = (TextView) view.findViewById(R.id.tvMood3);
+		TextView tvMood4 = (TextView) view.findViewById(R.id.tvMood4);
+		TextView tvMood5 = (TextView) view.findViewById(R.id.tvMood5);
+		TextView tvMood6 = (TextView) view.findViewById(R.id.tvMood6);
+
+		// Set Up Tiles TextView
+		TextView[] aTv = { tvMood1, tvMood2, tvMood3, tvMood4, tvMood5, tvMood6 };
+
+		try {
+			for (int i = 0; i < aTv.length; i++)
+				aTv[i].setText(jArrayMoods.getJSONObject(aMoodsIndex[i])
+						.getString("name"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	@SuppressLint("Recycle")
+	private void setTimeAndBackground(View view) {
+		String sTime, sDay = "";
+		String[] aStringMoodsIndex;
+
+		Calendar calendar = Calendar.getInstance();
+		day = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+		hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+		if (1 <= day && day <= 4) { // DAY
 			sDay = getResources().getStringArray(R.array.aDays)[day];
 			background = getResources().obtainTypedArray(R.array.aTileBgs)
-					.getResourceId(day, 0);
+					.getResourceId(day, 0); // got Tile background for weekday
+			aStringMoodsIndex = getResources()
+					.getStringArray(R.array.aDayMoods)[day].split("_");
 		} else {
 			sDay = getResources().getStringArray(R.array.aDays)[0];
 			background = getResources().obtainTypedArray(R.array.aTileBgs)
-					.getResourceId(0, 0);
+					.getResourceId(0, 0);// got Tile background for weekend
+			aStringMoodsIndex = getResources()
+					.getStringArray(R.array.aDayMoods)[0].split("_");
 		}
-		if (5 <= hour && hour < 12)
+
+		if (5 <= hour && hour < 12) // HOUR
 			sTime = getResources().getStringArray(R.array.aTimes)[0];
 		else if (12 <= hour && hour < 19)
 			sTime = getResources().getStringArray(R.array.aTimes)[1];
 		else
 			sTime = getResources().getStringArray(R.array.aTimes)[2];
 
-		tvTime = (TextView) view.findViewById(R.id.tvTime);
+		// Set Texts
+		TextView tvTime = (TextView) view.findViewById(R.id.tvTime);
 		tvTime.setText("It's a " + sDay + " " + sTime + "\n"
 				+ "What are you mood for?");
 
-		llBackground = (LinearLayout) view.findViewById(R.id.llBackground);
+		// Set Background Res
+		LinearLayout llBackground = (LinearLayout) view
+				.findViewById(R.id.llBackground);
 		llBackground.setBackgroundResource(background);
 
-		categoryMoods = getResources().obtainTypedArray(R.array.aCategoryMoods);
-
-		dayMoods = getResources().obtainTypedArray(R.array.aDayMoods);
-		moodsIndex = getResources().getIntArray(dayMoods.getResourceId(day, 0));
-
-		ivMood1 = (ImageView) view.findViewById(R.id.ivMood1);
-		ivMood2 = (ImageView) view.findViewById(R.id.ivMood2);
-		ivMood3 = (ImageView) view.findViewById(R.id.ivMood3);
-		ivMood4 = (ImageView) view.findViewById(R.id.ivMood4);
-		ivMood5 = (ImageView) view.findViewById(R.id.ivMood5);
-		ivMood6 = (ImageView) view.findViewById(R.id.ivMood6);
-
-		ivMood1.setBackgroundResource(categoryMoods.getResourceId(
-				moodsIndex[0], 0));
-		ivMood2.setBackgroundResource(categoryMoods.getResourceId(
-				moodsIndex[1], 0));
-		ivMood3.setBackgroundResource(categoryMoods.getResourceId(
-				moodsIndex[2], 0));
-		ivMood4.setBackgroundResource(categoryMoods.getResourceId(
-				moodsIndex[3], 0));
-		ivMood5.setBackgroundResource(categoryMoods.getResourceId(
-				moodsIndex[4], 0));
-		ivMood6.setBackgroundResource(categoryMoods.getResourceId(
-				moodsIndex[5], 0));
-
-		ivMood1.setOnClickListener(new MoodOnClickListener());
-		ivMood2.setOnClickListener(new MoodOnClickListener());
-		ivMood3.setOnClickListener(new MoodOnClickListener());
-		ivMood4.setOnClickListener(new MoodOnClickListener());
-		ivMood5.setOnClickListener(new MoodOnClickListener());
-		ivMood6.setOnClickListener(new MoodOnClickListener());
-		categoryMoods.recycle();
-
-		tvMood1 = (TextView) view.findViewById(R.id.tvMood1);
-		tvMood2 = (TextView) view.findViewById(R.id.tvMood2);
-		tvMood3 = (TextView) view.findViewById(R.id.tvMood3);
-		tvMood4 = (TextView) view.findViewById(R.id.tvMood4);
-		tvMood5 = (TextView) view.findViewById(R.id.tvMood5);
-		tvMood6 = (TextView) view.findViewById(R.id.tvMood6);
-
-		aStringCategoryMoods = getResources().getStringArray(
-				R.array.aStringCategoryMoods);
-		tvMood1.setText(aStringCategoryMoods[moodsIndex[0]]);
-		tvMood2.setText(aStringCategoryMoods[moodsIndex[1]]);
-		tvMood3.setText(aStringCategoryMoods[moodsIndex[2]]);
-		tvMood4.setText(aStringCategoryMoods[moodsIndex[3]]);
-		tvMood5.setText(aStringCategoryMoods[moodsIndex[4]]);
-		tvMood6.setText(aStringCategoryMoods[moodsIndex[5]]);
-
+		for (int i = 0; i < aStringMoodsIndex.length; i++)
+			aMoodsIndex[i] = Integer.parseInt(aStringMoodsIndex[i]);
 	}
 
-	public TileFragment() {
-
-	}
-
-	public class MoodOnClickListener implements OnClickListener {
+	public class TileOnClickListener implements OnClickListener {
 
 		@Override
 		public void onClick(View v) {
 			Intent iProductList = new Intent(getActivity(),
-					CategoryListActivity.class);
-			iProductList.putExtra(KEY_BG, background);
+					MoodListActivity.class);
+			iProductList.putExtra(MoodListActivity.INTENT_BG, background);
+			iProductList.putExtra(MoodListActivity.INTENT_DAY_INDEX, day);
 			switch (v.getId()) {
 			case R.id.ivMood1:
-				iProductList.putExtra(KEY_MOOD_ID, moodsIndex[0]);
+				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+						aMoodsIndex[0]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood2:
-				iProductList.putExtra(KEY_MOOD_ID, moodsIndex[1]);
+				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+						aMoodsIndex[1]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood3:
-				iProductList.putExtra(KEY_MOOD_ID, moodsIndex[2]);
+				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+						aMoodsIndex[2]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood4:
-				iProductList.putExtra(KEY_MOOD_ID, moodsIndex[3]);
+				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+						aMoodsIndex[3]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood5:
-				iProductList.putExtra(KEY_MOOD_ID, moodsIndex[4]);
+				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+						aMoodsIndex[4]);
 				startActivity(iProductList);
 				break;
 			case R.id.ivMood6:
-				iProductList.putExtra(KEY_MOOD_ID, moodsIndex[5]);
+				iProductList.putExtra(MoodListActivity.INTENT_MOOD_INDEX,
+						aMoodsIndex[5]);
 				startActivity(iProductList);
 				break;
 
@@ -168,4 +194,5 @@ public class TileFragment extends Fragment {
 		}
 
 	}
+
 }

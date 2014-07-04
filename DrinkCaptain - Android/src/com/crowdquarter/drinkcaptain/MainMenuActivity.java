@@ -1,13 +1,27 @@
 package com.crowdquarter.drinkcaptain;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
@@ -26,14 +40,27 @@ public class MainMenuActivity extends Activity {
 	private ListView myDrawerList;
 
 	private String[] drawerArray;
+
 	private Set<String> setShoppingCartString;
 
 	private SharedPreferences settings;
+
+	public final static String PRER = "preference";
+
+	public final static String PRER_SHOPPING_CART = "preference shopping cart";
+
+	public final static String PREF_VERSION = "preference version";
+
+	public final static String PREF_MODE = "preference mode";
+
+	public final static String PREF_PRODUCT = "preference product";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main_menu);
+
+		settings = getSharedPreferences(PRER, MODE_PRIVATE);
 
 		myDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		myDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -65,21 +92,34 @@ public class MainMenuActivity extends Activity {
 		};
 		myDrawerLayout.setDrawerListener(myDrawerToggle);
 
-		if (savedInstanceState == null) {
+		int version;
+		version = settings.getInt(PREF_VERSION, 0);
+
+		if (version == 0) {
+
+			new MyAsyncTask().execute(
+					"http://devdc.azurewebsites.net/api/moodcategories",
+					PREF_MODE, "MoodCategory");
+			new MyAsyncTask().execute(
+					"http://devdc.azurewebsites.net/api/productcategories",
+					PREF_PRODUCT, "ProductCategory");
+
+		} else {
+
 			selectItem(0);
 		}
 		// shopping cart
-		settings = getSharedPreferences(ShoppingCartActivity.PRER, MODE_PRIVATE);
-		setShoppingCartString = settings.getStringSet(
-				ShoppingCartActivity.PRER_SHOPPING_CART, null);
+
+		setShoppingCartString = settings.getStringSet(PRER_SHOPPING_CART, null);
 		if (setShoppingCartString == null) { // initialize shopping cart
 			setShoppingCartString = new HashSet<String>();
 			settings.edit()
-					.putStringSet(ShoppingCartActivity.PRER_SHOPPING_CART,
-							setShoppingCartString).commit();
+					.putStringSet(PRER_SHOPPING_CART, setShoppingCartString)
+					.commit();
 		} else {
 
 		}
+
 	}
 
 	private void selectItem(int position) {
@@ -144,4 +184,83 @@ public class MainMenuActivity extends Activity {
 	protected void onPause() {
 		super.onPause();
 	}
+
+	public String isToString(InputStream is) {
+		String sReturn = null, line;
+		BufferedReader bufferReader = null;
+
+		try {
+			bufferReader = new BufferedReader(
+					new InputStreamReader(is, "UTF-8"), 8);
+			StringBuilder stringBuilder = new StringBuilder();
+
+			while ((line = bufferReader.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+
+			sReturn = stringBuilder.toString();
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return sReturn;
+	}
+
+	class MyAsyncTask extends AsyncTask<String, String, String> {
+
+		String keyPref, keyJson;
+
+		protected String doInBackground(String... args) {
+			String result = null;
+			URL url;
+			try {
+				url = new URL(args[0]);
+
+				keyPref = args[1];
+
+				keyJson = args[2];
+
+				URLConnection connection = url.openConnection();
+
+				HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+				int responseCode = httpConnection.getResponseCode();
+
+				// Tests if responseCode == 200 Good Connection
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+
+					// Reads data from the connection
+					InputStream is = httpConnection.getInputStream();
+
+					result = isToString(is);
+				}
+
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			return result;
+
+		}
+
+		protected void onPostExecute(String result) {
+			try {
+				JSONArray jArray = new JSONObject(result).getJSONArray(keyJson);
+
+				settings.edit().putString(keyPref, jArray.toString()).commit();
+
+				if (keyPref.equals(PREF_PRODUCT))
+					selectItem(0);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
 }

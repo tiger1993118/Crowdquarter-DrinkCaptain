@@ -27,7 +27,7 @@
             android:lineSpacingExtra="6sp"
             android:text="@string/sTime"
             android:textColor="@color/box_text"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <ImageView
             android:id="@+id/ivHeader"

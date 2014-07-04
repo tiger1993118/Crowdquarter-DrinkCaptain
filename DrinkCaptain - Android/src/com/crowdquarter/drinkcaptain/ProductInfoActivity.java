@@ -19,11 +19,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class ProductInfoActivity extends Activity {
-	int q;
+	int quantity = 1;
+
 	double total, price;
 
-	Button bq;
-	TextView tvName, tvPrice, tvVolume, tvTotal;
+	Button bQuantity;
+
+	TextView tvTotal;
 
 	private Set<String> setShoppingCartString;
 
@@ -37,87 +39,65 @@ public class ProductInfoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_info);
 
+		tvTotal = (TextView) findViewById(R.id.tvTotal);
+		bQuantity = (Button) findViewById(R.id.ibQuantity);
+
+		TextView tvName = (TextView) findViewById(R.id.tvName);
+		TextView tvPrice = (TextView) findViewById(R.id.tvPrice);
+		TextView tvVolume = (TextView) findViewById(R.id.tvVolume);
+
 		try {
 			jsonProduct = new JSONObject(getIntent().getStringExtra(
-					ProductListActivity.KEY_PRODUCT_JSON));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-		tvName = (TextView) findViewById(R.id.tvName);
-		tvPrice = (TextView) findViewById(R.id.tvPrice);
-		tvVolume = (TextView) findViewById(R.id.tvVolume);
-		tvTotal = (TextView) findViewById(R.id.tvTotal);
-		bq = (Button) findViewById(R.id.ibQuantity);
-		try {
-			String[] info = jsonProduct.getString("name").split("-");
-			String productName = info[0];
-			String productVolume = null;
-			if (info.length > 1)
-				productVolume = info[1];
-
-			tvName.setText(productName);
+					ProductListActivity.INTENT_PRODUCT));
+			// Set Up Infos
+			tvName.setText(jsonProduct.getString("name"));
 			tvPrice.setText(jsonProduct.getString("price"));
+			tvVolume.setText(jsonProduct.getString("volume"));
 			tvTotal.setText(jsonProduct.getString("price"));
-			price = Double.parseDouble(jsonProduct.getString("price"));
-			q = 1;
-			total = price;
-			if (productName.equals(null))
-				tvVolume.setText("unknown");
-			else
-				tvVolume.setText(productVolume);
 
-			// initialize shopping cart
-			settings = getSharedPreferences(ShoppingCartActivity.PRER,
-					MODE_PRIVATE);
+			// Set Up Shopping Cart
+			settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
 			setShoppingCartString = settings.getStringSet(
-					ShoppingCartActivity.PRER_SHOPPING_CART, null);
+					MainMenuActivity.PRER_SHOPPING_CART, null);
 
 			for (String s : setShoppingCartString) {
 				JSONObject j = new JSONObject(s);
 				listShoppingCart.add(j);
 			}
+
+			total = price = Double.parseDouble(jsonProduct.getString("price"));
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void add(View view) {
-		if (q < 25) {
-			total += price;
-			q += 1;
-			total = (double) Math.round(total * 100) / 100;
 
-			bq.setText(q + "");
-			tvTotal.setText(total + "");
-		}
+		total += price;
+
+		total = (double) Math.round(total * 100) / 100;
+
+		quantity += 1;
+
+		bQuantity.setText(quantity + "");
+
+		tvTotal.setText(total + "");
 
 	}
 
 	public void minus(View view) {
-		if (q > 1) {
+		if (quantity > 1) {
 			total -= price;
-			q -= 1;
+
 			total = (double) Math.round(total * 100) / 100;
-			bq.setText(q + "");
+
+			quantity -= 1;
+
+			bQuantity.setText(quantity + "");
+
 			tvTotal.setText(total + "");
 		}
-	}
-
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.my_action_bar, menu);
-		return true;
-	}
-
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		if (item.getItemId() == R.id.shoppingCart) {
-			Intent iShoppingCart = new Intent(getApplicationContext(),
-					ShoppingCartActivity.class);
-			startActivity(iShoppingCart);
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	public void addToCart(View view) {
@@ -125,21 +105,24 @@ public class ProductInfoActivity extends Activity {
 		try {
 
 			boolean inCart = false;
+
 			for (int i = 0; i < listShoppingCart.size(); i++) {
 				if ((listShoppingCart.get(i).getString("name"))
 						.equals(jsonProduct.get("name"))) {
 
 					inCart = true;
 
-					listShoppingCart.get(i).put("quantity",
-							listShoppingCart.get(i).getInt("quantity") + q);
+					listShoppingCart.get(i).put(
+							"quantity",
+							listShoppingCart.get(i).getInt("quantity")
+									+ quantity);
 
 					i = listShoppingCart.size();
 
 				}
 			}
 			if (!inCart)
-				listShoppingCart.add(jsonProduct.put("quantity", q));
+				listShoppingCart.add(jsonProduct.put("quantity", quantity));
 
 			setShoppingCartString.clear();
 
@@ -152,8 +135,27 @@ public class ProductInfoActivity extends Activity {
 		}
 
 		settings.edit()
-				.putStringSet(ShoppingCartActivity.PRER_SHOPPING_CART,
+				.putStringSet(MainMenuActivity.PRER_SHOPPING_CART,
 						setShoppingCartString).commit();
 
 	}
+
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.my_action_bar, menu);
+		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == R.id.shoppingCart) {
+
+			Intent iShoppingCart = new Intent(getApplicationContext(),
+					ShoppingCartActivity.class);
+
+			startActivity(iShoppingCart);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
 }

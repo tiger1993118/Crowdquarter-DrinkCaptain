@@ -1,78 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/shopping_cart_bg"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:background="@color/shopping_cart_bg" >
 
-    <HorizontalScrollView
+    <Gallery
+        android:id="@+id/gallery"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="103" >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" >
-
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/wine" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/wine" />
-        </LinearLayout>
-    </HorizontalScrollView>
+        android:layout_height="100dp" />
 
     <ListView
-        android:id="@+id/listView1"
+        android:id="@+id/lvProducts"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="120" >
+        android:layout_height="140dp"
+        android:layout_below="@id/gallery"
+        android:background="@drawable/checkout" >
     </ListView>
 
     <RelativeLayout
+        android:id="@+id/rlTotal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="125" >
-
-        <TextView
-            android:id="@+id/tvTax"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/textView2"
-            android:layout_alignRight="@+id/tvTotal"
-            android:layout_marginBottom="6dp"
-            android:text="@string/s10.99"
-            android:textColor="@color/shopping_cart_price"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/tvShipping"
-            android:layout_alignBottom="@+id/tvShipping"
-            android:layout_marginRight="16dp"
-            android:layout_toLeftOf="@+id/tvTotal"
-            android:text="@string/sShipping"
-            android:textColor="@color/shopping_cart_tv"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tvShipping"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/tvTotal"
-            android:layout_alignRight="@+id/tvTotal"
-            android:layout_marginBottom="6dp"
-            android:text="@string/s25.99"
-            android:textColor="@color/shopping_cart_price"
-            android:textSize="24sp" />
+        android:layout_height="100dp"
+        android:layout_below="@id/lvProducts"
+        android:background="@drawable/checkout" >
 
         <TextView
             android:id="@+id/textView3"
@@ -86,14 +36,13 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvTotal"
+            android:id="@+id/tvTax"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:text="@string/s175.68"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/tvTotal"
+            android:layout_marginTop="5dp"
+            android:text="@string/s10.99"
             android:textColor="@color/shopping_cart_price"
             android:textSize="24sp" />
 
@@ -101,27 +50,62 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/tvTax"
             android:layout_alignRight="@+id/textView2"
+            android:layout_alignTop="@+id/tvTax"
             android:text="@string/sTax"
             android:textColor="@color/shopping_cart_tv"
             android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvShipping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvTax"
+            android:layout_below="@+id/tvTax"
+            android:layout_marginTop="5dp"
+            android:text="@string/s25.99"
+            android:textColor="@color/shopping_cart_price"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvShipping"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/tvTotal"
+            android:text="@string/sShipping"
+            android:textColor="@color/shopping_cart_tv"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvShipping"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/s175.68"
+            android:textColor="@color/shopping_cart_price"
+            android:textSize="24sp" />
     </RelativeLayout>
 
     <ExpandableListView
         android:id="@+id/expandableListView1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="126" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bCheckout"
+        android:layout_below="@id/rlTotal" >
     </ExpandableListView>
 
     <Button
         android:id="@+id/bCheckout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="50"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/shopping_cart_checkout"
         android:text="@string/sCheckOut"
         android:textColor="@color/shopping_cart_button" />
 
-</LinearLayout>
+</RelativeLayout>

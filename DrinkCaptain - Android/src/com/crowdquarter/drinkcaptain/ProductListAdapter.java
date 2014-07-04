@@ -1,7 +1,6 @@
 package com.crowdquarter.drinkcaptain;
 
-import java.util.List;
-
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,22 +13,30 @@ import android.widget.TextView;
 
 public class ProductListAdapter extends BaseAdapter {
 	private Context context;
-	private List<JSONObject> productObjects;
+	private JSONArray jArray;
 
-	public ProductListAdapter(Context context, List<JSONObject> productObjects) {
+	public ProductListAdapter(Context context, JSONArray jArray) {
 		this.context = context;
-
-		this.productObjects = productObjects;
+		this.jArray = jArray;
 	}
 
 	@Override
 	public int getCount() {
-		return productObjects.size();
+		return jArray.length();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return productObjects.get(position);
+		try {
+			return jArray.get(position);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public void updateArray(JSONArray newJArray) {
+		this.jArray = newJArray;
 	}
 
 	@Override
@@ -47,18 +54,17 @@ public class ProductListAdapter extends BaseAdapter {
 		TextView tvName = (TextView) singleRow.findViewById(R.id.tvName);
 		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
 
-		JSONObject productObject = productObjects.get(position);
 		try {
+			JSONObject productObject = jArray.getJSONObject(position);
 
 			tvName.setText(productObject.getString("name"));
-			if (productObject.getString("price").length() > 0)
-				tvPrice.setText("$" + productObject.getString("price"));
-			else
-				tvPrice.setText("unknown");
+			tvPrice.setText("$" + productObject.getString("price"));
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
 		return singleRow;
 	}
+
 }

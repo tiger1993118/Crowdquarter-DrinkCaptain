@@ -4,14 +4,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,10 +18,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,31 +29,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.crowdquarter.drinkcaptain.util.CustomHttpsClient;
-
 public class ProductListActivity extends Activity {
-	TextView tvInfo;
-	RelativeLayout rlBackground;
-	ListView lvProducts;
-	TextView tvMood, tvDescption;
-	ImageView ivMood;
+	private ListView lvProducts;
 
-	private String urlTarget = "http://sandbox.delivery.com";
-	private String urlEndpoint;
-	private String merchant_id;
+	private JSONObject jObjectMood;
 
-	private int background, moodIndex;
+	private int background, dayIndex, moodIndex, productIndex;
 
-	TypedArray categoryMoods;
+	ProductListAdapter productAdapter;
 
-	private ProductListAdapter productListAdapter;
-
-	private List<JSONObject> productObjects;
-	private List<String> productNames;
-
-	public final static String KEY_NAME = "com.crowdquarter.drinkcaptain.ProductListActivity.name";
-	public final static String KEY_PRICE = "com.crowdquarter.drinkcaptain.ProductListActivity.price";
-	public final static String KEY_PRODUCT_JSON = "com.crowdquarter.drinkcaptain.ProductListActivity.product_json";
+	public final static String INTENT_PRODUCT = "com.crowdquarter.drinkcaptain.product";
 
 	@SuppressLint("Recycle")
 	@Override
@@ -65,43 +46,48 @@ public class ProductListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_list);
 
-		background = getIntent().getIntExtra(TileFragment.KEY_BG, 0);
-		moodIndex = getIntent().getIntExtra(TileFragment.KEY_MOOD_ID, 0);
+		background = getIntent().getIntExtra(MoodListActivity.INTENT_BG, 0);
+		dayIndex = getIntent()
+				.getIntExtra(MoodListActivity.INTENT_DAY_INDEX, 0);
+		moodIndex = getIntent().getIntExtra(MoodListActivity.INTENT_MOOD_INDEX,
+				0);
+		productIndex = getIntent().getIntExtra(
+				MoodListActivity.INTENT_PRODUCT_INDEX, 0);
 
-		rlBackground = (RelativeLayout) findViewById(R.id.rlBackground);
+		// Set Background Resource
+		RelativeLayout rlBackground = (RelativeLayout) findViewById(R.id.rlBackground);
 		rlBackground.setBackgroundResource(background);
 
-		tvMood = (TextView) findViewById(R.id.tvMood);
-		tvMood.setText(getResources().getStringArray(
-				R.array.aStringCategoryMoods)[moodIndex]);
+		// Set TextViews
+		TextView tvMood = (TextView) findViewById(R.id.tvMood);
+		TextView tvDescption = (TextView) findViewById(R.id.tvDescrption);
+		try {
+			jObjectMood = TileFragment.jArrayMoods.getJSONObject(moodIndex);
 
-		tvDescption = (TextView) findViewById(R.id.tvDescrption);
-		tvDescption.setText(getResources().getStringArray(
-				R.array.aDescrptionMoods)[moodIndex]);
+			tvMood.setText(jObjectMood.getString("name"));
+			tvDescption.setText(jObjectMood.getString("description"));
 
-		ivMood = (ImageView) findViewById(R.id.ivMood);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		// Set ImageView
+		ImageView ivMood = (ImageView) findViewById(R.id.ivMood);
 		ivMood.setImageResource(getResources().obtainTypedArray(
-				R.array.aCategoryMoods).getResourceId(moodIndex, 0));
+				R.array.aMoodsDrawable).getResourceId(moodIndex, 0));
 
-		productObjects = new ArrayList<JSONObject>();
-
-		productNames = Arrays.asList(getResources().getStringArray(
-				getResources().obtainTypedArray(R.array.aProductCategoryMoods)
-						.getResourceId(moodIndex, 0)));
-
-		merchant_id = getResources().getStringArray(R.array.aMerchantIds)[moodIndex];
-		Log.v("id", merchant_id + "");
 		lvProducts = (ListView) findViewById(R.id.lvProducts);
 		lvProducts.setOnItemClickListener(goProductInfoListener);
 		lvProducts.setOnItemLongClickListener(goSearchListener);
 
-		String[] merchants = merchant_id.split("_");
+		productAdapter = new ProductListAdapter(ProductListActivity.this,
+				new JSONArray());
 
-		for (int i = 0; i < merchants.length; i++) {
-			urlEndpoint = urlTarget + "/merchant/" + merchants[i] + "/menu"; // static
-
-			new InfoAsync(i).execute(urlEndpoint);
-		}
+		moodIndex++;
+		String endpoint = "/" + dayIndex + "/" + moodIndex + "/" + productIndex;
+		new RecommendProductsAsyncTask()
+				.execute("http://devdc.azurewebsites.net/api/recommendproduct"
+						+ endpoint);
 
 	}
 
@@ -112,19 +98,12 @@ public class ProductListActivity extends Activity {
 				long id) {
 			Intent iProductInfo = new Intent(getApplicationContext(),
 					ProductInfoActivity.class);
-			JSONObject product = productObjects.get(position);
-			try {
-
-				iProductInfo.putExtra(KEY_NAME, product.getString("name"));
-				iProductInfo.putExtra(KEY_PRICE, product.getString("price"));
-				iProductInfo.putExtra(KEY_PRODUCT_JSON, product.toString());
-				startActivity(iProductInfo);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
+			iProductInfo.putExtra(INTENT_PRODUCT,
+					productAdapter.getItem(position).toString());
+			startActivity(iProductInfo);
 		}
 	};
+
 	public OnItemLongClickListener goSearchListener = new OnItemLongClickListener() {
 
 		@Override
@@ -143,117 +122,72 @@ public class ProductListActivity extends Activity {
 
 	};
 
-	private void setUpProductList(final JSONObject result, int time) {
-		JSONArray menu;
-		try {
+	class RecommendProductsAsyncTask extends AsyncTask<String, String, String> {
 
-			menu = result.getJSONArray("menu");
-			// Log.v("menu", menu.toString());
-			for (int i = 0; i < menu.length(); i++) {
-				recurrsiveProductList((JSONObject) menu.get(i));
-			}
-			if (time == 0) {
-				productListAdapter = new ProductListAdapter(this,
-						productObjects);
-				// Log.v("length", productObjects.size() + "");
-				lvProducts.setAdapter(productListAdapter);
-			} else
-				productListAdapter.notifyDataSetChanged();
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void recurrsiveProductList(JSONObject product) {
-		try {
-			if (product.getJSONArray("children").length() == 0) {
-				for (int i = 0; i < productNames.size(); i++) {
-					if (product.getString("name").contains(productNames.get(i))) {
-						productObjects.add(product);
-					}
-				}
-
-			} else {
-				JSONArray menu = product.getJSONArray("children");
-				for (int i = 0; i < menu.length(); i++) {
-					recurrsiveProductList((JSONObject) menu.get(i));
-				}
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private class InfoAsync extends AsyncTask<String, Void, StringBuilder> {
-		private int i;
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		public InfoAsync(int i) {
-			this.i = i;
-		}
-
-		@Override
-		protected StringBuilder doInBackground(String... params) {
-			HttpClient client = CustomHttpsClient.getHttpClient();
-
-			HttpGet get = new HttpGet(params[0]);
-
-			HttpResponse response = null;
-
+		protected String doInBackground(String... args) {
+			String result = null;
+			URL url;
 			try {
-				response = client.execute(get);
-			} catch (ClientProtocolException e) {
+				url = new URL(args[0]);
+
+				URLConnection connection = url.openConnection();
+
+				HttpURLConnection httpConnection = (HttpURLConnection) connection;
+
+				int responseCode = httpConnection.getResponseCode();
+
+				// Tests if responseCode == 200 Good Connection
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+
+					// Reads data from the connection
+					InputStream is = httpConnection.getInputStream();
+
+					result = isToString(is);
+				}
+
+			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			if (response != null) {
-				InputStream is = null;
-				BufferedReader br = null;
-				StringBuilder sb = null;
-				try {
-					is = response.getEntity().getContent();
-					br = new BufferedReader(new InputStreamReader(is));
-					sb = new StringBuilder();
+			return result;
 
-					String line;
-					while ((line = br.readLine()) != null) {
-						sb.append(line);
-					}
-					return sb;
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					try {
-						br.close();
-						is.close();
-					} catch (Exception e) {
-					}
-				}
-			}
-			return null;
 		}
 
-		@Override
-		protected void onPostExecute(StringBuilder result) {
-			if (result != null) {
-				try {
-					JSONObject searchResult = new JSONObject(result.toString());
-					setUpProductList(searchResult, i);
-				} catch (JSONException e) {
-					e.printStackTrace();
+		protected void onPostExecute(String result) {
+			try {
+				JSONArray jArray = new JSONObject(result)
+						.getJSONArray("RecommendProductList");
+				productAdapter.updateArray(jArray);
+				lvProducts.setAdapter(productAdapter);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+
+		public String isToString(InputStream is) {
+			String sReturn = null, line;
+			BufferedReader bufferReader = null;
+
+			try {
+				bufferReader = new BufferedReader(new InputStreamReader(is,
+						"UTF-8"), 8);
+				StringBuilder stringBuilder = new StringBuilder();
+
+				while ((line = bufferReader.readLine()) != null) {
+					stringBuilder.append(line);
 				}
 
-				super.onPostExecute(result);
+				sReturn = stringBuilder.toString();
+
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+
+			return sReturn;
 		}
 	}
 }

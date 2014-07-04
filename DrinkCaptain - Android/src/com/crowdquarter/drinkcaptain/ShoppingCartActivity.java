@@ -8,25 +8,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 public class ShoppingCartActivity extends Activity {
 
-	public final static String PRER_SHOPPING_CART = "preference shopping cart";
-	public final static String PRER = "preference";
+	private SharedPreferences settings;
 
 	private Set<String> setShoppingCartString;
 
 	private List<JSONObject> listShoppingCart = new ArrayList<JSONObject>();
-
-	private ListView lvShoppingCart;
-
-	private SharedPreferences settings;
 
 	ShoppingCartListAdapter shoppingCartAdapter;
 
@@ -35,9 +29,10 @@ public class ShoppingCartActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shopping_cart);
 
-		settings = getSharedPreferences(PRER, MODE_PRIVATE);
+		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
 
-		setShoppingCartString = settings.getStringSet(PRER_SHOPPING_CART, null);
+		setShoppingCartString = settings.getStringSet(
+				MainMenuActivity.PRER_SHOPPING_CART, null);
 
 		try {
 			for (String s : setShoppingCartString) {
@@ -47,13 +42,12 @@ public class ShoppingCartActivity extends Activity {
 			e.printStackTrace();
 		}
 
-		lvShoppingCart = (ListView) findViewById(R.id.listView);
+		ListView lvShoppingCart = (ListView) findViewById(R.id.listView);
+
 		shoppingCartAdapter = new ShoppingCartListAdapter(this,
 				listShoppingCart);
-		lvShoppingCart.setAdapter(shoppingCartAdapter);
 
-		// lvShoppingCart
-		// .setOnItemLongClickListener(new DeleteShoppingCartListener());
+		lvShoppingCart.setAdapter(shoppingCartAdapter);
 
 		SwipeDismissTouchListener touchListener = new SwipeDismissTouchListener(
 				lvShoppingCart,
@@ -75,25 +69,9 @@ public class ShoppingCartActivity extends Activity {
 		lvShoppingCart.setOnTouchListener(touchListener);
 	}
 
-	public class DeleteShoppingCartListener implements OnItemLongClickListener {
-
-		@Override
-		public boolean onItemLongClick(AdapterView<?> parent, View view,
-				int position, long id) {
-
-			listShoppingCart.remove(position);
-			shoppingCartAdapter.notifyDataSetChanged();
-			lvShoppingCart.invalidate();
-
-			for (JSONObject jsonObj : listShoppingCart) {
-				setShoppingCartString.add(jsonObj.toString());
-			}
-
-			settings.edit()
-					.putStringSet(ShoppingCartActivity.PRER_SHOPPING_CART,
-							setShoppingCartString).commit();
-
-			return true;
-		}
+	public void checkout(View view) {
+		Intent iCheckout = new Intent(getApplicationContext(),
+				CheckoutActivity.class);
+		startActivity(iCheckout);
 	}
 }

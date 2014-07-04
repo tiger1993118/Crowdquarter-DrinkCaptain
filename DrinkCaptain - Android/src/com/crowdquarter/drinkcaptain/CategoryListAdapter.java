@@ -1,5 +1,8 @@
 package com.crowdquarter.drinkcaptain;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,27 +12,40 @@ import android.widget.TextView;
 
 public class CategoryListAdapter extends BaseAdapter {
 	private Context context;
+	private JSONArray jArray;
 
-	private String[] arrayCategoryDrink = { "Beer", "Wine", "Rum", "Scotch" };
-
-	public CategoryListAdapter(Context context) {
+	public CategoryListAdapter(Context context, JSONArray jArray) {
 		this.context = context;
+		this.jArray = jArray;
 
 	}
 
 	@Override
 	public int getCount() {
-		return arrayCategoryDrink.length;
+		return jArray.length();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return arrayCategoryDrink[position];
+		try {
+			return jArray.getJSONObject(position).getString("name");
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		try {
+			return Integer.parseInt(jArray.getJSONObject(position).getString(
+					"id"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return 0;
+		}
+
 	}
 
 	@Override
@@ -40,7 +56,11 @@ public class CategoryListAdapter extends BaseAdapter {
 				parent, false);
 
 		TextView tvName = (TextView) singleRow.findViewById(R.id.tvName);
-		tvName.setText(arrayCategoryDrink[position]);
+		try {
+			tvName.setText(jArray.getJSONObject(position).getString("name"));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
 		return singleRow;
 	}

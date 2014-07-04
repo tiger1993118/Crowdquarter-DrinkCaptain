@@ -25,7 +25,7 @@ public class ShoppingCartListAdapter extends BaseAdapter {
 		this.context = context;
 		this.productObjects = productObjects;
 
-		settings = this.context.getSharedPreferences(ShoppingCartActivity.PRER,
+		settings = this.context.getSharedPreferences(MainMenuActivity.PRER,
 				ShoppingCartActivity.MODE_PRIVATE);
 
 	}
@@ -55,7 +55,7 @@ public class ShoppingCartListAdapter extends BaseAdapter {
 		}
 
 		settings.edit()
-				.putStringSet(ShoppingCartActivity.PRER_SHOPPING_CART,
+				.putStringSet(MainMenuActivity.PRER_SHOPPING_CART,
 						setShoppingCartString).commit();
 	}
 
@@ -67,23 +67,18 @@ public class ShoppingCartListAdapter extends BaseAdapter {
 				R.layout.shopping_cart_listview, parent, false);
 
 		TextView tvName = (TextView) singleRow.findViewById(R.id.tvName);
-		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
-		TextView tvQuantity = (TextView) singleRow
-				.findViewById(R.id.tvQuantity);
 		TextView tvVolume = (TextView) singleRow.findViewById(R.id.tvVolume);
+		TextView tvQuantity = (TextView) singleRow.findViewById(R.id.tvQuanty);
+		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
 
 		JSONObject productObject = productObjects.get(position);
 		try {
-			String[] info = productObject.getString("name").split("-");
 
-			tvName.setText(info[0]);
-			tvVolume.setText(info[1]);
-
+			tvName.setText(productObject.getString("name"));
+			tvVolume.setText(productObject.getString("volume"));
 			tvQuantity.setText(productObject.getString("quantity"));
-			if (productObject.getString("price").length() > 0)
-				tvPrice.setText("$" + productObject.getString("price"));
-			else
-				tvPrice.setText("unknown");
+			tvPrice.setText("$" + productObject.getString("price"));
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
