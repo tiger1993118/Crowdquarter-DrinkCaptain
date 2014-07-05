@@ -74,6 +74,7 @@ public class ProductInfoActivity extends Activity {
 
 	public void minus(View view) {
 		if (quantity > 1) {
+
 			total -= price;
 
 			total = (double) Math.round(total * 100) / 100;

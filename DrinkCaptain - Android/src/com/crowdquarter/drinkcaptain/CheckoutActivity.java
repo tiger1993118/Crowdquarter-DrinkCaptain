@@ -2,10 +2,6 @@ package com.crowdquarter.drinkcaptain;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -13,14 +9,15 @@ import android.os.Bundle;
 import android.widget.ExpandableListView;
 import android.widget.Gallery;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.crowdquarter.backend.ShoppingCart;
 
 public class CheckoutActivity extends Activity {
 
+	private ShoppingCart shoppingCart;
+
 	private SharedPreferences settings;
-
-	private Set<String> setShoppingCartString;
-
-	private List<JSONObject> listShoppingCart = new ArrayList<JSONObject>();
 
 	private List<String> listInfo = new ArrayList<String>();
 
@@ -31,22 +28,15 @@ public class CheckoutActivity extends Activity {
 
 		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
 
-		setShoppingCartString = settings.getStringSet(
-				ShoppingCartActivity.PRER_SHOPPING_CART, null);
-
-		try {
-			for (String s : setShoppingCartString)
-				listShoppingCart.add(new JSONObject(s));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		shoppingCart = new ShoppingCart(settings.getString(
+				ShoppingCartActivity.PRER_SHOPPING_CART, null));
 
 		ListView lvShoppingCart = (ListView) findViewById(R.id.lvProducts);
 
 		lvShoppingCart = (ListView) findViewById(R.id.lvProducts);
 
 		lvShoppingCart.setAdapter(new CheckoutCartAdapter(
-				getApplicationContext(), listShoppingCart));
+				getApplicationContext(), shoppingCart));
 
 		listInfo.add(getResources().getString(R.string.sAddress));
 		listInfo.add(getResources().getString(R.string.sPayment));
@@ -64,5 +54,13 @@ public class CheckoutActivity extends Activity {
 		gallery.setSpacing(1);
 
 		gallery.setAdapter(new GalleryAdapter(getApplicationContext()));
+
+		TextView tvTax = (TextView) findViewById(R.id.tvTax);
+		TextView tvTotal = (TextView) findViewById(R.id.tvTotal);
+		TextView tvShipping = (TextView) findViewById(R.id.tvShipping);
+
+		tvTax.setText(shoppingCart.getStringTotalTax());
+		tvTotal.setText(shoppingCart.getStringTotalPrice());
+
 	}
 }

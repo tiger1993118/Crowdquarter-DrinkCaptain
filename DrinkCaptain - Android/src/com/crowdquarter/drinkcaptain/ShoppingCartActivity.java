@@ -2,11 +2,21 @@ package com.crowdquarter.drinkcaptain;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.crowdquarter.backend.ShoppingCart;
 
 public class ShoppingCartActivity extends Activity {
+
+	private TextView tvTax, tvTotal;
+
+	private ShoppingCart shoppingCart;
+
+	private SharedPreferences settings;
 
 	ShoppingCartListAdapter shoppingCartAdapter;
 
@@ -17,6 +27,21 @@ public class ShoppingCartActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_shopping_cart);
 
+		setUpShoppingCart();
+
+		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
+
+		shoppingCart = new ShoppingCart(settings.getString(PRER_SHOPPING_CART,
+				null));
+
+		tvTax = (TextView) findViewById(R.id.tvTax);
+		tvTotal = (TextView) findViewById(R.id.tvTotal);
+
+		tvTax.setText(shoppingCart.getStringTotalTax());
+		tvTotal.setText(shoppingCart.getStringTotalPrice());
+	}
+
+	private void setUpShoppingCart() {
 		ListView lvShoppingCart = (ListView) findViewById(R.id.listView);
 
 		shoppingCartAdapter = new ShoppingCartListAdapter(this);
@@ -36,11 +61,16 @@ public class ShoppingCartActivity extends Activity {
 							int[] reverseSortedPositions) {
 						for (int position : reverseSortedPositions) {
 							shoppingCartAdapter.remove(position);
+							shoppingCart = new ShoppingCart(settings.getString(
+									PRER_SHOPPING_CART, null));
+							tvTax.setText(shoppingCart.getStringTotalTax());
+							tvTotal.setText(shoppingCart.getStringTotalPrice());
 						}
 						shoppingCartAdapter.notifyDataSetChanged();
 					}
 				});
 		lvShoppingCart.setOnTouchListener(touchListener);
+
 	}
 
 	public void checkout(View view) {

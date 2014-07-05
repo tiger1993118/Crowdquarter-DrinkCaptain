@@ -1,10 +1,5 @@
 package com.crowdquarter.drinkcaptain;
 
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,24 +7,27 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.crowdquarter.backend.Product;
+import com.crowdquarter.backend.ShoppingCart;
+
 public class CheckoutCartAdapter extends BaseAdapter {
 	private Context context;
-	private List<JSONObject> productObjects;
+	private ShoppingCart shoppingCart;
 
-	public CheckoutCartAdapter(Context context, List<JSONObject> productObjects) {
+	public CheckoutCartAdapter(Context context, ShoppingCart shoppingCart) {
 		this.context = context;
-		this.productObjects = productObjects;
+		this.shoppingCart = shoppingCart;
 
 	}
 
 	@Override
 	public int getCount() {
-		return productObjects.size();
+		return shoppingCart.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return productObjects.get(position);
+	public Product getItem(int position) {
+		return shoppingCart.get(position);
 	}
 
 	@Override
@@ -44,23 +42,17 @@ public class CheckoutCartAdapter extends BaseAdapter {
 		View singleRow = layoutInflater.inflate(R.layout.checkout_listview,
 				parent, false);
 
+		Product product = shoppingCart.get(position);
+
 		TextView tvName = (TextView) singleRow.findViewById(R.id.tvName);
 		TextView tvVolume = (TextView) singleRow.findViewById(R.id.tvVolume);
 		TextView tvQuantity = (TextView) singleRow.findViewById(R.id.tvQuanty);
 		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
 
-		JSONObject productObject = productObjects.get(position);
-
-		try {
-
-			tvName.setText(productObject.getString("name"));
-			tvVolume.setText(productObject.getString("volume"));
-			tvQuantity.setText(productObject.getString("quantity"));
-			tvPrice.setText("$" + productObject.getString("price"));
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		tvName.setText(product.getName());
+		tvVolume.setText(product.getVolume());
+		tvPrice.setText("$" + product.getPrice());
+		tvQuantity.setText(shoppingCart.getStringQuantity(product));
 
 		return singleRow;
 	}

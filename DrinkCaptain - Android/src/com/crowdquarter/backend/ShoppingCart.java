@@ -97,7 +97,41 @@ public class ShoppingCart {
 	}
 
 	public double getTotalPrice() {
-		return 0;
+		double total = 0;
+		for (Product product : productToQuantity.keySet()) {
+			total += product.getDoublePrice() * productToQuantity.get(product);
+		}
+		total = Math.round(total * 100) / 100;
+		return total;
+	}
+
+	public String getStringTotalPrice() {
+		double total = 0;
+		for (Product product : productToQuantity.keySet()) {
+			total += product.getDoublePrice() * productToQuantity.get(product);
+		}
+		total = Math.round(total * 100) / 100;
+		return total + "";
+	}
+
+	public double getTotalTax() {
+		double total = 0;
+		for (Product product : productToQuantity.keySet()) {
+			total += product.getDoublePrice() * productToQuantity.get(product);
+		}
+		total *= 0.13;
+		total = Math.round(total * 100) / 100;
+		return total;
+	}
+
+	public String getStringTotalTax() {
+		double total = 0;
+		for (Product product : productToQuantity.keySet()) {
+			total += product.getDoublePrice() * productToQuantity.get(product);
+		}
+		total *= 0.13;
+		total = Math.round(total * 100) / 100;
+		return total + "";
 	}
 
 	public Product get(int position) {
