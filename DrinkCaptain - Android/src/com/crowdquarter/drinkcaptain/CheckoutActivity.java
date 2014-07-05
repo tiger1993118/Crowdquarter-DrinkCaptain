@@ -32,7 +32,7 @@ public class CheckoutActivity extends Activity {
 		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
 
 		setShoppingCartString = settings.getStringSet(
-				MainMenuActivity.PRER_SHOPPING_CART, null);
+				ShoppingCartActivity.PRER_SHOPPING_CART, null);
 
 		try {
 			for (String s : setShoppingCartString)

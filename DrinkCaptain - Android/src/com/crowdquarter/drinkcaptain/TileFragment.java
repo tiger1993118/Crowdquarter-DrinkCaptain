@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,7 +56,6 @@ public class TileFragment extends Fragment {
 		try {
 			jArrayMoods = new JSONArray(settings.getString(
 					MainMenuActivity.PREF_MODE, null));
-			Log.v("jArray", jArrayMoods.toString());
 			jArrayProducts = new JSONArray(settings.getString(
 					MainMenuActivity.PREF_PRODUCT, null));
 		} catch (JSONException e1) {

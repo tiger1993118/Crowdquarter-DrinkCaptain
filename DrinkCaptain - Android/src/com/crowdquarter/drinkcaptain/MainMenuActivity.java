@@ -9,8 +9,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,13 +39,9 @@ public class MainMenuActivity extends Activity {
 
 	private String[] drawerArray;
 
-	private Set<String> setShoppingCartString;
-
 	private SharedPreferences settings;
 
 	public final static String PRER = "preference";
-
-	public final static String PRER_SHOPPING_CART = "preference shopping cart";
 
 	public final static String PREF_VERSION = "preference version";
 
@@ -104,20 +98,11 @@ public class MainMenuActivity extends Activity {
 					"http://devdc.azurewebsites.net/api/productcategories",
 					PREF_PRODUCT, "ProductCategory");
 
+			settings.edit().putInt(PREF_VERSION, 1).commit();
+
 		} else {
 
 			selectItem(0);
-		}
-		// shopping cart
-
-		setShoppingCartString = settings.getStringSet(PRER_SHOPPING_CART, null);
-		if (setShoppingCartString == null) { // initialize shopping cart
-			setShoppingCartString = new HashSet<String>();
-			settings.edit()
-					.putStringSet(PRER_SHOPPING_CART, setShoppingCartString)
-					.commit();
-		} else {
-
 		}
 
 	}

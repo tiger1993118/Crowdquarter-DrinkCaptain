@@ -9,6 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,14 +31,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.crowdquarter.backend.Product;
+
 public class RecommendListActivity extends Activity {
 	private ListView lvProducts;
 
 	private JSONObject jObjectMood;
 
-	private int background, dayIndex, moodIndex, productIndex;
-
 	RecommendListAdapter productAdapter;
+
+	private int background, dayIndex, moodIndex, productIndex;
 
 	public final static String INTENT_PRODUCT = "com.crowdquarter.drinkcaptain.product";
 
@@ -81,7 +85,7 @@ public class RecommendListActivity extends Activity {
 		lvProducts.setOnItemLongClickListener(goSearchListener);
 
 		productAdapter = new RecommendListAdapter(RecommendListActivity.this,
-				new JSONArray());
+				new ArrayList<Product>());
 
 		moodIndex++;
 		String endpoint = "/" + dayIndex + "/" + moodIndex + "/" + productIndex;
@@ -96,11 +100,13 @@ public class RecommendListActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
+
 			Intent iProductInfo = new Intent(getApplicationContext(),
 					ProductInfoActivity.class);
 			iProductInfo.putExtra(INTENT_PRODUCT,
 					productAdapter.getItem(position).toString());
 			startActivity(iProductInfo);
+
 		}
 	};
 
@@ -159,8 +165,15 @@ public class RecommendListActivity extends Activity {
 			try {
 				JSONArray jArray = new JSONObject(result)
 						.getJSONArray("RecommendProductList");
-				productAdapter.updateArray(jArray);
+
+				List<Product> listProducts = new ArrayList<Product>();
+
+				for (int i = 0; i < jArray.length(); i++)
+					listProducts.add(new Product(jArray.getJSONObject(i)));
+
+				productAdapter.updateProducts(listProducts);
 				lvProducts.setAdapter(productAdapter);
+
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

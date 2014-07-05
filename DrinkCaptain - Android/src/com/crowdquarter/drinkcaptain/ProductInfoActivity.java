@@ -1,22 +1,19 @@
 package com.crowdquarter.drinkcaptain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.crowdquarter.backend.Product;
+import com.crowdquarter.backend.ShoppingCart;
 
 public class ProductInfoActivity extends Activity {
 	int quantity = 1;
@@ -27,13 +24,11 @@ public class ProductInfoActivity extends Activity {
 
 	TextView tvTotal;
 
-	private Set<String> setShoppingCartString;
-
-	private List<JSONObject> listShoppingCart = new ArrayList<JSONObject>();
-
-	private JSONObject jsonProduct;
+	private Product product;
 
 	private SharedPreferences settings;
+
+	private ShoppingCart shoppingCart;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,30 +41,21 @@ public class ProductInfoActivity extends Activity {
 		TextView tvPrice = (TextView) findViewById(R.id.tvPrice);
 		TextView tvVolume = (TextView) findViewById(R.id.tvVolume);
 
-		try {
-			jsonProduct = new JSONObject(getIntent().getStringExtra(
-					RecommendListActivity.INTENT_PRODUCT));
-			// Set Up Infos
-			tvName.setText(jsonProduct.getString("name"));
-			tvPrice.setText(jsonProduct.getString("price"));
-			tvVolume.setText(jsonProduct.getString("volume"));
-			tvTotal.setText(jsonProduct.getString("price"));
+		product = new Product(getIntent().getStringExtra(
+				RecommendListActivity.INTENT_PRODUCT));
 
-			// Set Up Shopping Cart
-			settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
-			setShoppingCartString = settings.getStringSet(
-					MainMenuActivity.PRER_SHOPPING_CART, null);
+		// Set Up Infos
+		tvName.setText(product.getName());
+		tvPrice.setText(product.getPrice());
+		tvVolume.setText(product.getVolume());
+		tvTotal.setText(product.getPrice());
 
-			for (String s : setShoppingCartString) {
-				JSONObject j = new JSONObject(s);
-				listShoppingCart.add(j);
-			}
+		total = price = Double.parseDouble(product.getPrice());
 
-			total = price = Double.parseDouble(jsonProduct.getString("price"));
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		// Set Up Shopping Cart
+		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
+		shoppingCart = new ShoppingCart(settings.getString(
+				ShoppingCartActivity.PRER_SHOPPING_CART, null));
 	}
 
 	public void add(View view) {
@@ -102,41 +88,11 @@ public class ProductInfoActivity extends Activity {
 
 	public void addToCart(View view) {
 
-		try {
-
-			boolean inCart = false;
-
-			for (int i = 0; i < listShoppingCart.size(); i++) {
-				if ((listShoppingCart.get(i).getString("name"))
-						.equals(jsonProduct.get("name"))) {
-
-					inCart = true;
-
-					listShoppingCart.get(i).put(
-							"quantity",
-							listShoppingCart.get(i).getInt("quantity")
-									+ quantity);
-
-					i = listShoppingCart.size();
-
-				}
-			}
-			if (!inCart)
-				listShoppingCart.add(jsonProduct.put("quantity", quantity));
-
-			setShoppingCartString.clear();
-
-			for (JSONObject jsonObj : listShoppingCart) {
-				setShoppingCartString.add(jsonObj.toString());
-			}
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
+		shoppingCart.putProduct(product, quantity);
 		settings.edit()
-				.putStringSet(MainMenuActivity.PRER_SHOPPING_CART,
-						setShoppingCartString).commit();
+				.putString(ShoppingCartActivity.PRER_SHOPPING_CART,
+						shoppingCart.toString()).commit();
+		Log.v("ProductInfoSize", shoppingCart.size() + "");
 
 	}
 
