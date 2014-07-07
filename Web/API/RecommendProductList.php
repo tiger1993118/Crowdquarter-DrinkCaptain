@@ -23,7 +23,11 @@ class RecommendProductList
         $values["product_id"] = MySQL::SQLValue($this->Product_ID,MySQL::SQLVALUE_NUMBER);
         $values["recommend_category_id"] = MySQL::SQLValue($this->Recommend_Category_ID,MySQL::SQLVALUE_NUMBER);
 
-        return $this->db->InsertRow("RecommendProductList", $values);      
+        $where=null;
+        $where = [" product_id = " . MySQL::SQLValue($this->Product_ID,MySQL::SQLVALUE_NUMBER) . " AND recommend_category_id = " . MySQL::SQLValue($this->Recommend_Category_ID,MySQL::SQLVALUE_NUMBER)];
+
+        // return $this->db->InsertRow("RecommendProductList", $values);      
+        return $this->db->AutoInsertUpdate("RecommendProductList", $values, $where);
     }
 
 }

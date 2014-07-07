@@ -13,20 +13,28 @@ $objRecommendCategory = new RecommendCategory();
 $allRecommendCategories = $objRecommendCategory->all();
 
 $objProduct = new Product();
-$allProducts = $objProduct->all();
+// $allProducts = $objProduct->all();
+
+$objProductCategory = new ProductCategory();
+$allProductCategories = $objProductCategory->all();
 
 $objRecommendProductList = new RecommendProductList();
 
 foreach ($allRecommendCategories as $category)
 {
 	$objRecommendProductList->Recommend_Category_ID = $category['recommend_category_id'];
-	$rand_keys = array_rand($allProducts, 10);
-	// var_dump($rand_keys);
-	foreach ($rand_keys as $rand_key)
+	foreach ($allProductCategories as $productcategory)
 	{
-		// echo $allProducts[$rand_key]['name'] . '<br>';
-		$objRecommendProductList->Product_ID = $allProducts[$rand_key]['product_id'];
-		$objRecommendProductList->add();
+		$objProduct->ProductCategoryID = $productcategory['product_category_id'];
+		$allProducts = $objProduct->getByProductCategory();
+		$rand_keys = array_rand($allProducts, 5);
+		// var_dump($rand_keys);
+		foreach ($rand_keys as $rand_key)
+		{
+			// echo $allProducts[$rand_key]['name'] . '<br>';
+			$objRecommendProductList->Product_ID = $allProducts[$rand_key]['product_id'];
+			$objRecommendProductList->add();
+		}
 	}
 }
 

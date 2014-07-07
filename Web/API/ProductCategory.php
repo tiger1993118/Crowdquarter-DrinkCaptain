@@ -80,5 +80,13 @@ class ProductCategory
         }
     }
 
-
+  /**
+   * Get all product categories
+   *
+   * @return ARRAY return the product categories in associate array
+   */
+    public function all()
+    {
+      return $this->db->Query('Select * from ProductCategory')->fetch_all(MYSQLI_ASSOC);
+    }  
 }
