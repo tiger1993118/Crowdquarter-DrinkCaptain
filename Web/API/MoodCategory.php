@@ -11,11 +11,11 @@ class MoodCategory
         if ($this->db->Error()) $this->db->Kill();
     }
 
-	/**
-	 * Get all mood categories, such as Bad Day, Game Night
-	 *
-	 * @return JSON return the categories in JSON format
-	 */
+    /**
+     * Get all mood categories, such as Bad Day, Game Night
+     *
+     * @return JSON return the categories in JSON format
+     */
     public function getMoodCategoryList()
     {
 
@@ -24,5 +24,16 @@ class MoodCategory
       $mood_category_list = json_encode(array("MoodCategory" => $result));
         return $mood_category_list;    	
     }
+    
+  /**
+   * Get all mood categories
+   *
+   * @return ARRAY return the mood categories in associate array
+   */
+    public function all()
+    {
+      return $this->db->Query('Select * from MoodCategory')->fetch_all(MYSQLI_ASSOC);
+    } 
+    
 }
 ?>
