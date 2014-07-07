@@ -72,4 +72,14 @@ class Product
       return $this->db->Query('Select * from Product')->fetch_all(MYSQLI_ASSOC);
     }  
 
+  /**
+   * Get all products of a category
+   *
+   * @return ARRAY return the products of a category in associate array
+   */
+    public function getByProductCategory()
+    {
+      return $this->db->Query('Select * from Product where product_category_id = ' . MySQL::SQLValue($this->ProductCategoryID,MySQL::SQLVALUE_NUMBER))->fetch_all(MYSQLI_ASSOC);
+    } 
+
 }
