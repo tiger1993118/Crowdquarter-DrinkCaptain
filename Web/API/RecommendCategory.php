@@ -46,7 +46,7 @@ class RecommendCategory
 //   ]
 // }';
       //Get the recommend product list from real database
-      $sql = 'Select p.product_id as id, p.name, p.volume, p.price from Product as p ' .
+      $sql = 'Select p.product_id as id, p.name, p.volume, p.price, p.imageURL from Product as p ' .
               'join RecommendProductList rpl on p.product_id = rpl.product_id ' .
               'join RecommendCategory rc on rc.recommend_category_id = rpl.recommend_category_id '.
               'where p.product_category_id = ' . MySQL::SQLValue($this->Product_Category_ID,MySQL::SQLVALUE_NUMBER) . 
