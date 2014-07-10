@@ -3,11 +3,15 @@ package com.crowdquarter.backend;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
+
 public class Product {
 	private String id;
 	private String name;
 	private String volume;
 	private String price;
+	private String imageURL;
+	private Bitmap image;
 	private JSONObject jObject;
 
 	public Product(JSONObject jObject) {
@@ -31,6 +35,8 @@ public class Product {
 			this.name = jObject.getString("name");
 			this.volume = jObject.getString("volume");
 			this.price = jObject.getString("price");
+			this.imageURL = jObject.getString("imageURL");
+			this.image = null;
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -51,6 +57,14 @@ public class Product {
 
 	public String getPrice() {
 		return price;
+	}
+
+	public void setImage(Bitmap image) {
+		this.image = image;
+	}
+
+	public Bitmap getImage() {
+		return image;
 	}
 
 	public double getDoublePrice() {
@@ -77,6 +91,10 @@ public class Product {
 	@Override
 	public int hashCode() {
 		return Integer.parseInt(id);
+	}
+
+	public String getImageURL() {
+		return imageURL;
 	}
 
 }

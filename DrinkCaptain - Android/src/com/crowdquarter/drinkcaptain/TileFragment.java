@@ -23,7 +23,7 @@ public class TileFragment extends Fragment {
 
 	private SharedPreferences settings;
 
-	private int background, day, hour;
+	public static int background, day, hour;
 
 	private int[] aMoodsIndex = new int[6];
 
@@ -37,12 +37,6 @@ public class TileFragment extends Fragment {
 		setUpVariable(root);
 
 		return root;
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
 	}
 
 	@SuppressLint("Recycle")
@@ -158,8 +152,8 @@ public class TileFragment extends Fragment {
 		public void onClick(View v) {
 			Intent iProductList = new Intent(getActivity(),
 					ProductListActivity.class);
-			iProductList.putExtra(ProductListActivity.INTENT_BG, background);
 			iProductList.putExtra(ProductListActivity.INTENT_DAY_INDEX, day);
+
 			switch (v.getId()) {
 			case R.id.ivMood1:
 				iProductList.putExtra(ProductListActivity.INTENT_MOOD_INDEX,

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/shopping_cart_bg" >
 
     <ImageView
-        android:id="@+id/ivWine"
+        android:id="@+id/ivProduct"
         android:layout_width="150dp"
         android:layout_height="250dp"
         android:layout_alignParentLeft="true"
@@ -19,9 +20,9 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ivWine"
+        android:layout_alignTop="@+id/ivProduct"
         android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/ivWine"
+        android:layout_toRightOf="@+id/ivProduct"
         android:text="@string/sName"
         android:textColor="@color/shopping_cart_tv"
         android:textSize="22sp" />

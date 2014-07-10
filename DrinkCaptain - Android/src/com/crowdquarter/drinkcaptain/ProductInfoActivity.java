@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.crowdquarter.backend.Product;
@@ -34,6 +35,9 @@ public class ProductInfoActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_info);
 
+		RelativeLayout rlLayout = (RelativeLayout) findViewById(R.id.rlBackground);
+		rlLayout.setBackgroundResource(TileFragment.background);
+
 		tvTotal = (TextView) findViewById(R.id.tvTotal);
 		bQuantity = (Button) findViewById(R.id.ibQuantity);
 
@@ -49,6 +53,10 @@ public class ProductInfoActivity extends Activity {
 		tvPrice.setText(product.getPrice());
 		tvVolume.setText(product.getVolume());
 		tvTotal.setText(product.getPrice());
+
+		ImageView ivProduct = (ImageView) findViewById(R.id.ivProduct);
+
+		ivProduct.setImageBitmap(RecommendListActivity.bitmap);
 
 		total = price = Double.parseDouble(product.getPrice());
 
@@ -93,7 +101,6 @@ public class ProductInfoActivity extends Activity {
 		settings.edit()
 				.putString(ShoppingCartActivity.PRER_SHOPPING_CART,
 						shoppingCart.toString()).commit();
-		Log.v("ProductInfoSize", shoppingCart.size() + "");
 
 	}
 

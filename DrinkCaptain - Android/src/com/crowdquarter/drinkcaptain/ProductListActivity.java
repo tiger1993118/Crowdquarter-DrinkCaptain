@@ -17,11 +17,9 @@ import android.widget.TextView;
 
 public class ProductListActivity extends Activity {
 
-	private int background, moodIndex, dayIndex;
+	private int moodIndex, dayIndex;
 
 	private JSONObject jObjectMood;
-
-	public final static String INTENT_BG = "com.crowdquarter.drinkcaptain.bg";
 
 	public final static String INTENT_DAY_INDEX = "com.crowdquarter.drinkcaptain.dayIndex";
 
@@ -41,13 +39,12 @@ public class ProductListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_list);
 
-		background = getIntent().getIntExtra(INTENT_BG, 0);
 		moodIndex = getIntent().getIntExtra(INTENT_MOOD_INDEX, 0);
 		dayIndex = getIntent().getIntExtra(INTENT_DAY_INDEX, 0);
 
 		// Set Background Resource
 		RelativeLayout rlBackground = (RelativeLayout) findViewById(R.id.rlBackground);
-		rlBackground.setBackgroundResource(background);
+		rlBackground.setBackgroundResource(TileFragment.background);
 
 		// Set TextViews
 		TextView tvMood = (TextView) findViewById(R.id.tvMood);
@@ -86,7 +83,7 @@ public class ProductListActivity extends Activity {
 
 			Intent iProductList = new Intent(getApplicationContext(),
 					RecommendListActivity.class);
-			iProductList.putExtra(INTENT_BG, background);
+
 			iProductList.putExtra(INTENT_DAY_INDEX, dayIndex);
 			iProductList.putExtra(INTENT_MOOD_INDEX, moodIndex);
 			iProductList.putExtra(INTENT_PRODUCT_INDEX, (int) id);

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crowdquarter.backend.Product;
@@ -48,10 +49,14 @@ public class RecommendListAdapter extends BaseAdapter {
 
 		TextView tvName = (TextView) singleRow.findViewById(R.id.tvName);
 		TextView tvPrice = (TextView) singleRow.findViewById(R.id.tvPrice);
+		ImageView ivProduct = (ImageView) singleRow
+				.findViewById(R.id.ivProduct);
 
 		Product product = products.get(position);
 		tvName.setText(product.getName());
 		tvPrice.setText("$" + product.getPrice());
+		if (product.getImage() != null)
+			ivProduct.setImageBitmap(product.getImage());
 
 		return singleRow;
 	}

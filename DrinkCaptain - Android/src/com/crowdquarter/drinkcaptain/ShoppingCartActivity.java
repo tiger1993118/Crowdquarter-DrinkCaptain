@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,8 +30,10 @@ public class ShoppingCartActivity extends Activity {
 
 		setUpShoppingCart();
 
-		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
+		LinearLayout llBackground = (LinearLayout) findViewById(R.id.llBackground);
+		llBackground.setBackgroundResource(TileFragment.background);
 
+		settings = getSharedPreferences(MainMenuActivity.PRER, MODE_PRIVATE);
 		shoppingCart = new ShoppingCart(settings.getString(PRER_SHOPPING_CART,
 				null));
 
@@ -74,8 +77,7 @@ public class ShoppingCartActivity extends Activity {
 	}
 
 	public void checkout(View view) {
-		Intent iCheckout = new Intent(getApplicationContext(),
-				CheckoutActivity.class);
-		startActivity(iCheckout);
+		Intent iMap = new Intent(getApplicationContext(), MapActivity.class);
+		startActivity(iMap);
 	}
 }

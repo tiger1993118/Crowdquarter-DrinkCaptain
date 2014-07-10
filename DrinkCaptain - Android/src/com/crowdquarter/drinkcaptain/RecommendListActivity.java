@@ -20,6 +20,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -40,9 +42,23 @@ public class RecommendListActivity extends Activity {
 
 	RecommendListAdapter productAdapter;
 
-	private int background, dayIndex, moodIndex, productIndex;
+	List<Product> listProducts = new ArrayList<Product>();
+
+	private int dayIndex, moodIndex, productIndex;
+
+	public static Bitmap bitmap;
 
 	public final static String INTENT_PRODUCT = "com.crowdquarter.drinkcaptain.product";
+
+	public final static String URL_RECOMMENDED_LIST = "http://devdc.azurewebsites.net/api/recommendproduct";
+
+	public final static String URL_PRODUCT = "http://devdc.azurewebsites.net/api/product";
+
+	public final static String URL_IMAGE = "http://www.lcbo.com/app/images/products/0";
+
+	public final static String GETRECOMMENDEDLIST = "retrieve recommended product list from database";
+
+	public final static String GETPRODUCTIMAGE = "retrieve product image from LCBO database";
 
 	@SuppressLint("Recycle")
 	@Override
@@ -50,7 +66,6 @@ public class RecommendListActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_product_list);
 
-		background = getIntent().getIntExtra(ProductListActivity.INTENT_BG, 0);
 		dayIndex = getIntent().getIntExtra(
 				ProductListActivity.INTENT_DAY_INDEX, 0);
 		moodIndex = getIntent().getIntExtra(
@@ -60,7 +75,7 @@ public class RecommendListActivity extends Activity {
 
 		// Set Background Resource
 		RelativeLayout rlBackground = (RelativeLayout) findViewById(R.id.rlBackground);
-		rlBackground.setBackgroundResource(background);
+		rlBackground.setBackgroundResource(TileFragment.background);
 
 		// Set TextViews
 		TextView tvMood = (TextView) findViewById(R.id.tvMood);
@@ -89,9 +104,8 @@ public class RecommendListActivity extends Activity {
 
 		moodIndex++;
 		String endpoint = "/" + dayIndex + "/" + moodIndex + "/" + productIndex;
-		new RecommendProductsAsyncTask()
-				.execute("http://devdc.azurewebsites.net/api/recommendproduct"
-						+ endpoint);
+		new myAsyncTask(0).execute(GETRECOMMENDEDLIST, URL_RECOMMENDED_LIST
+				+ endpoint);
 
 	}
 
@@ -105,6 +119,7 @@ public class RecommendListActivity extends Activity {
 					ProductInfoActivity.class);
 			iProductInfo.putExtra(INTENT_PRODUCT,
 					productAdapter.getItem(position).toString());
+			bitmap = productAdapter.getItem(position).getImage();
 			startActivity(iProductInfo);
 
 		}
@@ -128,13 +143,26 @@ public class RecommendListActivity extends Activity {
 
 	};
 
-	class RecommendProductsAsyncTask extends AsyncTask<String, String, String> {
+	class myAsyncTask extends AsyncTask<String, String, String> {
+
+		private int i;
+		private String action;
+
+		public myAsyncTask(int i) {
+			this.i = i;
+		}
 
 		protected String doInBackground(String... args) {
-			String result = null;
-			URL url;
+
+			action = args[0];
+
+			if (args[1].equals("null")) {
+				return null;
+			}
+
 			try {
-				url = new URL(args[0]);
+
+				URL url = new URL(args[1]);
 
 				URLConnection connection = url.openConnection();
 
@@ -148,59 +176,79 @@ public class RecommendListActivity extends Activity {
 					// Reads data from the connection
 					InputStream is = httpConnection.getInputStream();
 
-					result = isToString(is);
-				}
+					if (action.equals(GETRECOMMENDEDLIST)) {
 
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
+						return isToString(is);
+
+					} else if (action.equals(GETPRODUCTIMAGE)) {
+
+						Bitmap bitmap = null;
+
+						bitmap = BitmapFactory.decodeStream(is);
+
+						listProducts.get(i).setImage(bitmap);
+
+					}
+				}
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			return result;
-
+			return null;
 		}
 
 		protected void onPostExecute(String result) {
-			try {
-				JSONArray jArray = new JSONObject(result)
-						.getJSONArray("RecommendProductList");
 
-				List<Product> listProducts = new ArrayList<Product>();
+			if (action.equals(GETRECOMMENDEDLIST)) {
+				try {
+					JSONArray jArray = new JSONObject(result)
+							.getJSONArray("RecommendProductList");
 
-				for (int i = 0; i < jArray.length(); i++)
-					listProducts.add(new Product(jArray.getJSONObject(i)));
+					for (int i = 0; i < jArray.length(); i++) {
+						Product newProduct = new Product(
+								jArray.getJSONObject(i));
+						listProducts.add(newProduct);
 
-				productAdapter.updateProducts(listProducts);
-				lvProducts.setAdapter(productAdapter);
+						new myAsyncTask(i).execute(GETPRODUCTIMAGE,
+								newProduct.getImageURL());
+					}
 
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}
+					productAdapter.updateProducts(listProducts);
+					lvProducts.setAdapter(productAdapter);
 
-		public String isToString(InputStream is) {
-			String sReturn = null, line;
-			BufferedReader bufferReader = null;
-
-			try {
-				bufferReader = new BufferedReader(new InputStreamReader(is,
-						"UTF-8"), 8);
-				StringBuilder stringBuilder = new StringBuilder();
-
-				while ((line = bufferReader.readLine()) != null) {
-					stringBuilder.append(line);
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-
-				sReturn = stringBuilder.toString();
-
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			} else if (action.equals(GETPRODUCTIMAGE)) {
+				productAdapter.updateProducts(listProducts);
+				productAdapter.notifyDataSetChanged();
 			}
 
-			return sReturn;
 		}
+	}
+
+	public String isToString(InputStream is) {
+		String sReturn = null, line;
+		BufferedReader bufferReader = null;
+
+		try {
+			bufferReader = new BufferedReader(
+					new InputStreamReader(is, "UTF-8"), 8);
+			StringBuilder stringBuilder = new StringBuilder();
+
+			while ((line = bufferReader.readLine()) != null) {
+				stringBuilder.append(line);
+			}
+
+			sReturn = stringBuilder.toString();
+
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return sReturn;
 	}
 }
