@@ -5,6 +5,7 @@ class MoodCategory
     var $db = null;
     var $ID = null;
     var $Name = null;
+    var $Description = null;
 
     function __construct(){
         $this->db = new MySQL(true);
@@ -34,6 +35,36 @@ class MoodCategory
     {
       return $this->db->Query('Select * from MoodCategory')->fetch_all(MYSQLI_ASSOC);
     } 
+
+   /**
+   * Update a mood category
+   *
+   * @return Boolean Returns TRUE on success or FALSE on error
+   */
+    public function update()
+    {
+        $values=null;
+        $values["name"] = MySQL::SQLValue($this->Name,MySQL::SQLVALUE_TEXT);
+        $values["description"] = MySQL::SQLValue($this->Description,MySQL::SQLVALUE_TEXT);
+        $where=null;
+        $where["mood_category_id"] =  MySQL::SQLValue($this->ID,MySQL::SQLVALUE_NUMBER);
+
+        return $this->db->UpdateRows("MoodCategory", $values, $where);          
+    }
+
+    /**
+   * Add a mood category
+   *
+   * @return integer Returns last insert ID on success or FALSE on failure
+   */
+    public function add()
+    {
+        $values=null;
+        $values["name"] = MySQL::SQLValue($this->Name,MySQL::SQLVALUE_TEXT);
+        $values["description"] = MySQL::SQLValue($this->Description,MySQL::SQLVALUE_TEXT);
+
+        return $this->db->InsertRow("MoodCategory", $values);          
+    }
     
 }
 ?>

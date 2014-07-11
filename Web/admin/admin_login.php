@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class='row loginForm'>
-	<form action="admin_mood.php" method="post">
+	<form action="admin_authentication.php" method="post">
 		<div class='columns large-offset-4 large-4 medium-offset-3 medium-6 small-offset-1 small-10'>
 			<div class='row'>
 				<div class='columns small-12'><label>Username</label></div>

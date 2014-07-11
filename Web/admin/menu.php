@@ -1,8 +1,7 @@
-<?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-?>
+<div class="row top-menu">
+    <ul class="inline-list">
+        <li><a href="admin_mood.php">Mood</a></li>
+        <li><a href="admin_recommendproduct.php">Recommend Products</a></li>
+        <li><a href="logout.php">Logout</a></li>
+    </ul>
+</div>
