@@ -2,7 +2,7 @@
 require_once('../system/mysql.class.php');
 class RecommendCategory
 {
-	  var $db = null;
+    var $db = null;
     var $ID = null;
     var $Weekday = null;
     var $Mood_Category_ID = null;
@@ -67,4 +67,22 @@ class RecommendCategory
       return $this->db->Query('Select * from RecommendCategory')->fetch_all(MYSQLI_ASSOC);
     }    
 
+    /**
+     * Get all products and the recommend status of a recommend category, 
+     * if the product in the specific recommend list (weekday/mood/product category), 
+     * the recommend_category_id is the id, otherwise the recommend_category_id is null
+     *
+     * @return ARRAY return the product list in associate array
+     */
+    public function getProductsForRecommend()
+    {
+        $sql = 'select Product.*, rp.recommend_category_id from Product left join ' .
+            '(select Product.product_id, RecommendProductList.recommend_category_id from Product ' .
+                'join RecommendProductList on Product.product_id = RecommendProductList.product_id ' .
+                'join RecommendCategory on RecommendProductList.recommend_category_id = RecommendCategory.recommend_category_id ' .
+                'where Product.product_category_id = ' . MySQL::SQLValue($this->Product_Category_ID,MySQL::SQLVALUE_NUMBER) . ' and RecommendCategory.weekday = ' . MySQL::SQLValue($this->Weekday,MySQL::SQLVALUE_NUMBER) .
+                ' and RecommendCategory.mood_category_id = ' . MySQL::SQLValue($this->Mood_Category_ID,MySQL::SQLVALUE_NUMBER) . ' ) as rp ON Product.product_id = rp.product_id order by Product.name';
+        return $this->db->Query($sql)->fetch_all(MYSQLI_ASSOC);
+    }
+    
 }
