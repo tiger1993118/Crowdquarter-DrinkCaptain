@@ -14,11 +14,11 @@ class RecommendCategory
     }
 
 
-	/**
-	 * Get all recommend product in a recommend category, such as Monday/Summer BBQ/Wine
-	 *
-	 * @return JSON return the recommend product in JSON format, it will only return the id, name, volume and price in the list
-	 */
+    /**
+     * Get all recommend product in a recommend category, such as Monday/Summer BBQ/Wine
+     *
+     * @return JSON return the recommend product in JSON format, it will only return the id, name, volume and price in the list
+     */
     public function getRecommendProductList()
     {
 
@@ -81,8 +81,47 @@ class RecommendCategory
                 'join RecommendProductList on Product.product_id = RecommendProductList.product_id ' .
                 'join RecommendCategory on RecommendProductList.recommend_category_id = RecommendCategory.recommend_category_id ' .
                 'where Product.product_category_id = ' . MySQL::SQLValue($this->Product_Category_ID,MySQL::SQLVALUE_NUMBER) . ' and RecommendCategory.weekday = ' . MySQL::SQLValue($this->Weekday,MySQL::SQLVALUE_NUMBER) .
-                ' and RecommendCategory.mood_category_id = ' . MySQL::SQLValue($this->Mood_Category_ID,MySQL::SQLVALUE_NUMBER) . ' ) as rp ON Product.product_id = rp.product_id order by Product.name';
+                ' and RecommendCategory.mood_category_id = ' . MySQL::SQLValue($this->Mood_Category_ID,MySQL::SQLVALUE_NUMBER) . ' ) as rp ON Product.product_id = rp.product_id '.
+                ' where Product.product_category_id = ' . MySQL::SQLValue($this->Product_Category_ID,MySQL::SQLVALUE_NUMBER) . ' order by Product.name';
         return $this->db->Query($sql)->fetch_all(MYSQLI_ASSOC);
     }
+    /**
+     * Get the recommend_category_id of a combination of weekday and mood 
+     * if the combination exists, return the ID, 
+     * if the combination doesn't exist, insert it to database and return the ID
+     *
+     * @return INTEGER return the recommend_category_id
+     */
+    public function getIDByWeekdayAndMood()
+    {
+        $where=null;
+        $where["weekday"] = MySQL::SQLValue($this->Weekday, MySQL::SQLVALUE_NUMBER);
+        $where["mood_category_id"] = MySQL::SQLValue($this->Mood_Category_ID, MySQL::SQLVALUE_NUMBER);
+        $result = $this->db->SelectRows("RecommendCategory", $where);
+        if ($this->db->RowCount() > 0)
+        {
+          return $this->db->RecordsArray()[0]['recommend_category_id'];
+        }
+        else
+        {
+          $this->add();
+          return $this->ID;
+        }        
+    }
     
+    
+    /**
+     * Add a new recommend category to database
+     *
+     * @return boolean Returns TRUE on success or FALSE on error
+     */  
+    public function add()
+    {
+        $values=null;
+        $values["weekday"] = MySQL::SQLValue($this->Weekday, MySQL::SQLVALUE_NUMBER);
+        $values["mood_category_id"] = MySQL::SQLValue($this->Mood_Category_ID, MySQL::SQLVALUE_NUMBER);
+        $result = $this->db->InsertRow("RecommendCategory", $values);
+        $this->ID = $this->db->GetLastInsertID();
+        return $result;      
+    }    
 }

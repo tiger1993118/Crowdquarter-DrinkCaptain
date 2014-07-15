@@ -2,7 +2,7 @@
 require_once('../system/mysql.class.php');
 class RecommendProductList
 {
-	var $db = null;
+    var $db = null;
     var $Product_ID = null;
     var $Recommend_Category_ID = null;
 
@@ -30,4 +30,19 @@ class RecommendProductList
         return $this->db->AutoInsertUpdate("RecommendProductList", $values, $where);
     }
 
+    /**
+     * Remove a product from a recommend category
+     *
+     * @return boolean Returns TRUE on success or FALSE on error
+     */  
+    public function remove()
+    {
+        $where=null;
+        $where["product_id"] = MySQL::SQLValue($this->Product_ID,MySQL::SQLVALUE_NUMBER);
+        $where["recommend_category_id"] = MySQL::SQLValue($this->Recommend_Category_ID,MySQL::SQLVALUE_NUMBER);
+
+        // return $this->db->InsertRow("RecommendProductList", $values);      
+        return $this->db->DeleteRows("RecommendProductList", $where);
+    }    
+    
 }

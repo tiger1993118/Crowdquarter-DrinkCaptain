@@ -5424,3 +5424,15 @@ th.hide-for-touch {
 
 .inlist {
   font-weight: bold; }
+
+#loading_progress {
+  display: none;
+  position: fixed;
+  width: 66px;
+  height: 66px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto auto auto auto;
+  background-image: url("../images/loading.gif"); }
