@@ -78,7 +78,7 @@ function showAction(input)
 function bindAction()
 {
     
-    $('.ToggleProduct').click(function () {
+    $('.ToggleProduct').unbind('click').click(function () {
         toggleProduct($(this));
     });
 

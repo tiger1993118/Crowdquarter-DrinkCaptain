@@ -3,7 +3,7 @@ $(document).ready(function () {
 });
 function bindEditEvent()
 {
-    $('.editMoodCategory').click(function () {
+    $('.editMoodCategory').unbind('click').click(function () {
         mood_category_id = $(this).parent().parent().find('.moodCategoryID').val();
         mood_category_name = $(this).parent().parent().find('.moodCategoryName').text();
         mood_category_description = $(this).parent().parent().find('.moodCategoryDescription').text();
@@ -13,7 +13,33 @@ function bindEditEvent()
         $('#editCategryContainer').foundation('reveal', 'open');    
     });
 }
+function bindDeleteEvent()
+{
+    $('.deleteMoodCategory').unbind('click').click(function () {
+        mood_category_id = $(this).parent().parent().find('.moodCategoryID').val();
+        row = $(this).parent().parent();
+        console.log(mood_category_id);
+        if (confirm("Confirm delete?"))
+        {
+            $.ajax({
+                url: 'deleteMood.php',
+                type: 'POST',
+                data: {'mood_category_id' : mood_category_id} 
+            }).done(function (data) {
+                if (!data.result)
+                {
+                    alert ('Delete fail, please try again!');
+                }
+                else
+                {
+                    $(row).remove();
+                }
+            });
+        }
+    });
+}
 bindEditEvent();
+bindDeleteEvent();
 $('#editCategoryForm').submit(function (e) {
     e.preventDefault();
     $.ajax({
@@ -64,9 +90,12 @@ $('#addCategoryForm').submit(function (e) {
             newCategory = '<tr><td><span class="moodCategoryName">' + name + '</span></td>' +
                 '<td><span class="moodCategoryDescription">' + description + '</span></td>' +
                 '<td><input type="hidden" class="moodCategoryID" value="' + mood_category_id + '"><a class="editMoodCategory">Edit</a></td>' +
-                '<td>Delete</td></tr>';
+                '<td><a class="deleteMoodCategory">Delete</a></td></tr>';
             $('#tblMoodCategories').append(newCategory);
+            $('#mood_category_name_a').val('');
+            $('#mood_category_description_a').val('');
             bindEditEvent();
+            bindDeleteEvent();
         }
     });   
 });

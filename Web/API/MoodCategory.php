@@ -52,7 +52,7 @@ class MoodCategory
         return $this->db->UpdateRows("MoodCategory", $values, $where);          
     }
 
-    /**
+   /**
    * Add a mood category
    *
    * @return integer Returns last insert ID on success or FALSE on failure
@@ -64,6 +64,19 @@ class MoodCategory
         $values["description"] = MySQL::SQLValue($this->Description,MySQL::SQLVALUE_TEXT);
 
         return $this->db->InsertRow("MoodCategory", $values);          
+    }
+
+   /**
+   * Delete a mood category, the RecommendProductList and RecommendCategory has been set to cascade delete in database
+   *
+   * @return Boolean Returns TRUE on success or FALSE on error
+   */
+    public function delete()
+    {
+        $where=null;
+        $where["mood_category_id"] = MySQL::SQLValue($this->ID,MySQL::SQLVALUE_NUMBER);
+
+        return $this->db->DeleteRows("MoodCategory", $where);           
     }
     
 }

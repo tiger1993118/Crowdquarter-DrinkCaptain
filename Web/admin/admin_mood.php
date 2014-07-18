@@ -40,7 +40,7 @@ $allMoodCategories = $objMoodCategory->all();
                 <td><span class="moodCategoryName"><?php echo $category["name"]; ?></span></td>
                 <td><span class="moodCategoryDescription"><?php echo $category["description"]; ?></span></td>
                 <td><input type="hidden" class="moodCategoryID" value="<?php echo $category["mood_category_id"]; ?>"><a class="editMoodCategory">Edit</a></td>
-                <td>Delete</td>
+                <td><a class="deleteMoodCategory">Delete</a></td>
             </tr>
     <?php
     }
