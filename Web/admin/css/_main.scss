@@ -19,4 +19,6 @@
   bottom: 0;
   left: 0;
   margin: auto auto auto auto;
-  background-image: url("../images/loading.gif"); }
+  background-image: url("../images/loading.gif"); 
+  z-index: 1000;
+}

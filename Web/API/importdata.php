@@ -35,7 +35,7 @@ foreach ($product_ids as $product_id)
 	$json = json_decode($result);
 	if ($json->status == 200)
 	{
-		$objProduct->ID = $json->result->id;
+		$objProduct->LCBOProductID = $json->result->id;
 		$objProduct->Name = $json->result->name;
 		$objProduct->Price = $json->result->price_in_cents;
 		$objProduct->Volume = $json->result->volume_in_milliliters;
@@ -45,7 +45,7 @@ foreach ($product_ids as $product_id)
 
 		$objProduct->ProductCategoryID = $objProductCategory->getIDByName();
 
-		$objProduct->save();
+//		$objProduct->save();
 		$i++;
 	}
 	else

@@ -64,21 +64,116 @@ $allProductCategories = $objProductCategory->all();
         ?>        
     </div>
     <div class="row recommendProductWizard hide" id="products">
-        <h4>Product</h4>
+        <div class="row">
+            <div class="small-9 columns"><h4>Product</h4></div>
+            <div class="small-3 columns"><a class="addProduct inline">Add new product</a></div>
+        </div>
         <table id="productlist" class="small-12">
             <tr>
                 <th>Name</th>
                 <th>Volume</th>
                 <th>Price</th>
+                <th>LCBO ID</th>                
                 <th></th>
                 <th></th>
             </tr>
         </table>
     </div>
+    <div id="addProductContainer" class="reveal-modal" data-reveal>
+        <form id="addProductForm">
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">LCBO Product ID</label></div>
+                <div class="small-9 columns">
+                    <div class="row collapse">
+                        <div class="small-10 columns"><input type="text" id="lcbo_product_id_a" name="lcbo_product_id"></div>
+                        <div class="small-2 columns"><a class="button postfix getLCBOProduct">Get</a></div>
+                    </div>
+                </div>
+            </div>            
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Name</label></div>
+                <div class="small-9 columns"><input type="text" id="product_name_a" name="name"></div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Volume</label></div>
+                <div class="small-9 columns">
+                    <div class="row collapse">
+                        <div class="small-10 columns"><input type="text" id="product_volume_a" name="volume"></div>
+                        <div class="small-2 columns"><span class="postfix">ml</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Price</label></div>
+                <div class="small-9 columns">
+                    <div class="row collapse">                    
+                        <div class="small-10 columns"><input type="text" id="product_price_a" name="price"></div>
+                        <div class="small-2 columns"><span class="postfix">cents</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Image URL</label></div>
+                <div class="small-9 columns"><input type="text" id="product_imageURL_a" name="imageURL"></div>
+            </div>            
+            <div class="row">
+                <div class="small-12"><button type="submit">Submit</button></div>
+            </div> 
+        </form>
+        <a class="close-reveal-modal">&#215;</a>
+    </div> 
+
+    <div id="editProductContainer" class="reveal-modal" data-reveal>
+        <form id="editProductForm">
+            <input type="hidden" id="product_id_e" name="product_id">
+            <input type="hidden" id="product_inlist_e" name="product_inlist">
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">LCBO Product ID</label></div>
+                <div class="small-9 columns">
+                    <div class="row collapse">
+                        <div class="small-10 columns"><input type="text" disabled="disabled" id="lcbo_product_id_e" name="lcbo_product_id"></div>
+                        <div class="small-2 columns"><a class="button postfix updateLCBOProduct">Get</a></div>
+                    </div>
+                </div>
+            </div>            
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Name</label></div>
+                <div class="small-9 columns"><input type="text" id="product_name_e" name="name"></div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Volume</label></div>
+                <div class="small-9 columns">
+                    <div class="row collapse">
+                        <div class="small-10 columns"><input type="text" id="product_volume_e" name="volume"></div>
+                        <div class="small-2 columns"><span class="postfix">ml</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Price</label></div>
+                <div class="small-9 columns">
+                    <div class="row collapse">                    
+                        <div class="small-10 columns"><input type="text" id="product_price_e" name="price"></div>
+                        <div class="small-2 columns"><span class="postfix">cents</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-3 columns"><label class="inline">Image URL</label></div>
+                <div class="small-9 columns"><input type="text" id="product_imageURL_e" name="imageURL"></div>
+            </div>            
+            <div class="row">
+                <div class="small-12"><button type="submit">Submit</button>&nbsp;<button type="button" class="delteProduct">Delete</button></div>
+            </div> 
+        </form>
+        <a class="close-reveal-modal">&#215;</a>
+    </div>     
+    
     <div id="loading_progress">
 
     </div>    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/vendor/jquery.validate.js"></script>    
     <script src="js/foundation.min.js"></script>
     <script src="js/foundation/foundation.reveal.js"></script>    
     <script>
