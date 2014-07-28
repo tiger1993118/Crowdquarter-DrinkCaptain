@@ -51,7 +51,8 @@ class RecommendCategory
               'join RecommendCategory rc on rc.recommend_category_id = rpl.recommend_category_id '.
               'where p.product_category_id = ' . MySQL::SQLValue($this->Product_Category_ID,MySQL::SQLVALUE_NUMBER) . 
               ' and rc.weekday = ' . MySQL::SQLValue($this->Weekday,MySQL::SQLVALUE_NUMBER) . 
-              ' and rc.mood_category_id = ' . MySQL::SQLValue($this->Mood_Category_ID,MySQL::SQLVALUE_NUMBER);
+              ' and rc.mood_category_id = ' . MySQL::SQLValue($this->Mood_Category_ID,MySQL::SQLVALUE_NUMBER) .
+              ' order by p.name';
       $result = $this->db->Query($sql)->fetch_all(MYSQLI_ASSOC);
       $product_list = json_encode(array("RecommendProductList" => $result));
       return $product_list;
